@@ -22,7 +22,7 @@ title: "YONDU UDONTA"
 description: ""
 baseurl: ""
 url: "https://boreum0302.github.io"
-logo: "/images/site-logo.png"
+logo: "/images/yondu-udonta-logo.png"
 date_format: "%B %-d, %Y"
 read_time: false
 words_per_minute: 
@@ -36,10 +36,6 @@ google_fonts:
   - name: "Lora"
     weights: "400,400i,700,700i"
 google_analytics: ""
-disqus:
-  shortname: "sosimpletheme"
-twitter:
-  username: "mmistakes"
 google_site_verification: "UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y"
 
 # Liquid
@@ -110,7 +106,7 @@ defaults:
 # Site Author
 author:
   name: EUNJU YANG
-  picture: 
+  picture: "/images/yondu-udonta-logo.png"
   email: boreum0302@snu.ac.kr
   links:
     - title: GitHub
