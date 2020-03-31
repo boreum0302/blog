@@ -80,7 +80,7 @@ plugins:
 
 # Collections
 collections:
-  recipes:
+  photo:
     output: true
     permalink: /:collection/:path/
 
