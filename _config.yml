@@ -18,11 +18,11 @@
 remote_theme: mmistakes/so-simple-theme
 
 locale: en-US
-title: "GROOT"
-description: "We are Groot."
+title: "YONDU UDONTA"
+description: ""
 baseurl: ""
 url: "https://boreum0302.github.io"
-logo: "/images/groot.png"
+logo: "/images/site-logo.png"
 date_format: "%B %-d, %Y"
 read_time: false
 words_per_minute: 
@@ -110,25 +110,9 @@ defaults:
 # Site Author
 author:
   name: EUNJU YANG
-  picture: /images/site-logo.png
+  picture: 
   email: boreum0302@snu.ac.kr
-  twitter: 
   links:
     - title: GitHub
       url: https://github.com/boreum0302
       icon: fab fa-github-square
-
-# Footer Links
-footer_links:
-  - title: Twitter
-    url: https://twitter.com/mmistakes
-    icon: fab fa-twitter-square
-  - title: Instagram
-    url: https://instagram.com/mmistakes
-    icon: fab fa-instagram
-  - title: GitHub
-    url: https://github.com/mmistakes
-    icon: fab fa-github-square
-  - title: Feed
-    url: atom.xml
-    icon: fas fa-rss-square
