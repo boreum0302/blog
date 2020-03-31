@@ -18,11 +18,11 @@
 remote_theme: mmistakes/so-simple-theme
 
 locale: en-US
-title: "YONDU UDONTA"
-description: ""
+title: "GROOT"
+description: "We are Groot."
 baseurl: ""
 url: "https://boreum0302.github.io"
-logo: "/images/site-logo.png"
+logo: "/images/groot.png"
 date_format: "%B %-d, %Y"
 read_time: false
 words_per_minute: 
