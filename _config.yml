@@ -112,3 +112,6 @@ author:
     - title: GitHub
       url: https://github.com/boreum0302
       icon: fab fa-github-square
+    - title: e-mail
+      url: mailto:boreum0302@snu.ac.kr
+      icon: fab fa-email-square
