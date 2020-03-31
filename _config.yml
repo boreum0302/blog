@@ -18,14 +18,14 @@
 remote_theme: mmistakes/so-simple-theme
 
 locale: en-US
-title: "So Simple"
-description: "A simple Jekyll theme for words and pictures."
+title: "YONDU UDONTA"
+description: ""
 baseurl: ""
 url: "https://boreum0302.github.io"
 logo: "/images/so-simple-site-logo.png"
 date_format: "%B %-d, %Y"
-read_time: true
-words_per_minute: # 200
+read_time: false
+words_per_minute: 
 mathjax:
   enable: true
   combo: "tex-svg"
