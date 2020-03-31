@@ -80,7 +80,7 @@ plugins:
 
 # Collections
 collections:
-  photo:
+  photos:
     output: true
     permalink: /:collection/:path/
 
