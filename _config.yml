@@ -36,6 +36,8 @@ google_fonts:
   - name: "Lora"
     weights: "400,400i,700,700i"
 google_analytics: ""
+disqus:
+  shortname: "boreum0302"
 google_site_verification: "UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y"
 
 # Liquid
