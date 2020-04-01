@@ -103,12 +103,5 @@ figcaption {
 a {
   -webkit-transition: $global-transition;
   transition: $global-transition;
-  color:#267CB9;
   text-decoration: none; 
-}
-
-a:hover, a:focus {
-  color:#267CB9;
-  text-decoration: none;
-  font-weight: bold;
 }
