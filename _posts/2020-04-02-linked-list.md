@@ -6,7 +6,7 @@ tags:
   - Python
 ---
 
-"파이썬과 함께하는 자료구조의 이해, 양성봉 지음, (주)생능출판사"를 보고 연결리스트의 일종인 단순연결리스트, 이중연결리스트, 원형연결리스트에 대해 정리했다.
+《파이썬과 함께하는 자료구조의 이해, 양성봉 지음, (주)생능출판사》를 보고 연결리스트의 일종인 단순연결리스트, 이중연결리스트, 원형연결리스트에 대해 정리했다.
 
 ## 단순연결리스트
 단순연결리스트(Singly Linked List)에서 노드는 항목을 저장하는 `item`과 뒤쪽 노드를 는 `next`로 구성된다. 특별히, `head`는 맨 앞의 노드를 가리킨다. 노드의 삽입, 삭제, 그리고 항목의 탐색에 걸리는 시간은 아래와 같다.
@@ -33,25 +33,25 @@ tags:
     def size(self): return self.size
     def is_empty(self): return self.size == 0
     
-    def insert_front(self, item):
+    def insert_front(self, item):  # 맨 앞에 노드 삽입하기
         if self.is_empty():
             self.head = self.Node(item, None)
         else:
             self.head = self.Node(item, self.head)
         self.size += 1
         
-    def insert_after(self, item, p):  # p는 특정 노드를 가리킴(예: head.next.next)
+    def insert_after(self, item, p):  # p가 가리키는 노드 뒤에 있는 노드 삽입하기
         p.next = self.Node(item, p.next)
         self.size += 1
         
-    def delete_front(self):
+    def delete_front(self):  # 맨 뒤의 노드 삭제하기
         if self.is_empty():
             raise EmptyError('Underflow')
         else:
             self.head = self.head.next
             self.size -= 1
             
-    def delete_after(self, p):
+    def delete_after(self, p):  # p가 가리키는 노드 뒤에 있는 노드 삭제하기
         if self.is_empty():
             raise EmptyError('Unerflow')
         t = p.next
@@ -65,7 +65,7 @@ tags:
             p = p.next
         return None
     
-    def print_list(self):
+    def print_list(self):  # 전체 항목 출력하기
         p = self.head
         while p:
             if p.next != None:
@@ -103,21 +103,21 @@ class DList:
     def size(self): return self.size
     def is_empty(self): return self.size == 0
     
-    def insert_before(self, p, item):
+    def insert_before(self, p, item):  # p가 가리키는 노드 앞에 노드 삽입하기
         t = p.prev
         n = self.Node(item, t, p)
         p.prev = n
         t.next = n
         self.size += 1
         
-    def insert_after(self, p, item):
+    def insert_after(self, p, item):  # p가 가리키는 노드 뒤에 노드 삽입하기
         t = p.next
         n = self.Node(item, p, t)
         t.prev = n
         p.next = n
         self.size -= 1
         
-    def delete(self, x):  # 는 특정 노드를 가리킴(예: head.next.next)
+    def delete(self, x):  # x가 가리키는 노드 삭제하기
         f = x.prev
         r = x.next
         f.next = r
@@ -125,7 +125,7 @@ class DList:
         self.size -= 1
         return x.item
     
-    def print_list(self):
+    def print_list(self):  # 전체 항목 
         if self.is_empty():
             print("list is empty")
         else:
