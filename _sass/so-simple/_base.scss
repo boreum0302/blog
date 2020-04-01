@@ -105,3 +105,7 @@ a {
   transition: $global-transition;
   text-decoration: none; 
 }
+
+a:hover {
+  text-decoration: none; 
+}
