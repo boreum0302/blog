@@ -9,10 +9,13 @@ body {
 }
 
 a {
-  color: $accent-color;
+  color: #267CB9;
+  text-decoration: none;
    
   &:hover {
-    color: shade($accent-color, 25%);
+    color:#069;
+    font-weight: bold;
+    text-decoration: none;
   }
 }
 
