@@ -9,7 +9,7 @@ tags:
 《파이썬과 함께하는 자료구조의 이해, 양성봉 지음, (주)생능출판사》를 보고 연결리스트의 일종인 단순연결리스트, 이중연결리스트, 원형연결리스트에 대해 정리했다.
 
 ## 단순연결리스트
-단순연결리스트(Singly Linked List)에서 노드는 항목을 저장하는 `item`과 뒤쪽 노드를 는 `next`로 구성된다. 특별히, `head`는 맨 앞의 노드를 가리킨다. 노드의 삽입, 삭제, 그리고 항목의 탐색에 걸리는 시간은 아래와 같다.
+단순연결리스트(Singly Linked List)에서 노드는 항목을 저장하는 `item`과 뒤쪽 노드를 저장하는 `next`로 구성된다. 특별히, `head`는 맨 앞의 노드를 가리킨다. 노드의 삽입, 삭제, 그리고 항목의 탐색에 걸리는 시간은 아래와 같다.
 
 |삽입|삭제|탐색|
 |---|---|---|
@@ -58,7 +58,7 @@ tags:
         p.next = t.next
         self.size -= 1
         
-    def search(self, target):  # target을 항목으로 가지는 노드가 앞에서부터 몇 번째에 있는지를 반환함
+    def search(self, target):  # target을 항목으로 가지는 노드가 앞에서부터 몇 번째에 있는지 반환하기
         p = self.head
         for k in range(self.size):
             if target == p.item: return k
@@ -136,4 +136,67 @@ class DList:
                 else:
                     print(p.item)
                 p = p.next
+```
+
+## 원형연결리스트
+원형연결리스트는 단순연결리스트와 동일하지만, 맨 뒤 노드의 `next`에 맨 앞 노드가 저장되어 있다. 그리고 맨 앞 노드를 가리키는 `head` 대신에 맨 뒤 노드를 가리키는 `last`를 사용한다. 노드의 삽입, 삭제, 그리고 항목의 탐색에 걸리는 시간은 아래와 같다.
+
+|삽입|삭제|탐색|
+|---|---|---|
+|O(1)|O(1)|O(N)|
+
+```python
+class CList:
+
+    class EmptyError(Exception):
+        pass
+    
+    class Node:
+        def __init__(self, item, link):
+            self.item = item
+            self.next = link
+    
+    def __init__(self):
+        self.last = None
+        self.size = 0
+    
+    def no_items(self): return self.size
+    def is_empty(self): return self.size == 0
+    
+    def insert(self, item):  # 맨 앞에 노드 삽입하기
+        n = self.Node(item, None)
+        if self.is_empty():
+            n.next = n
+            self.last = n
+        else:
+            n.next = self.last.next
+            self.last.next = n
+        self.size += 1
+        
+    def first(self):  # 맨 앞 노드의 항목 반환하기
+        if self.is_empty():
+            raise EmptyError('Underflow')
+        f = self.last.next
+        return f.item
+    
+    def delete(self):  # 맨 앞의 노드 삭제하기
+        if self.is_empty():
+            raise EmptyError('Underflow')
+        x = self.last.next
+        if self.size == 1:
+            self.last = None
+        else:
+            self.last.next = x.next
+        self.size -= 1
+        
+    def print_list(self):  # 전체 항목 
+        if self.is_empty():
+            print('list is empty')
+        else:
+            f = self.last.next
+            p = f
+            while p.next != f:
+                print(p.item, ' -> ', end='', sep='')
+                p = p.next
+            print(p.item)
 ```
