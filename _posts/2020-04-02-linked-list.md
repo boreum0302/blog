@@ -51,14 +51,14 @@ tags:
             self.head = self.head.next
             self.size -= 1
             
-    def delete_after(self, p):  # p는 특정 노드를 가리킴(예: head.next.next)
+    def delete_after(self, p):
         if self.is_empty():
             raise EmptyError('Unerflow')
         t = p.next
         p.next = t.next
         self.size -= 1
         
-    def search(self, target):  # target을 항목으로 가지는 노드가 앞에서부터 몇 번째에 있는지를 return
+    def search(self, target):  # target을 항목으로 가지는 노드가 앞에서부터 몇 번째에 있는지를 반환함
         p = self.head
         for k in range(self.size):
             if target == p.item: return k
@@ -76,8 +76,64 @@ tags:
 ```
 
 ## 이중연결리스트
-이중연결리스트(Doubly Linked List)에서 노드는 항목을 저장하는 `item`과 앞쪽 노드를 저장하는 `prev`, 뒤쪽 노드를 저장하는 `next`로 구성된다. 단순연결리스트에서와 비슷하게 `head`는 맨 앞의 노드를 가리키며, `tail`은 맨 뒤의 노드를 가리킨다. 여기서 주의할 점은, 이중연결리스트에서 `head`와 `tail`은 항목에 `None`이 저장된 더미(dummy) 노드라는 것이다. 이에 따라, 이중연결리스트의 경우는 맨 앞 항목이 `head.next`라는 노드의 `item`에 저장되어 있다(당연히 맨 뒤 항목은 `tail.prev`라는 노드의 `item`에 저장되어 있음). 노드의 삽입, 삭제, 그리고 항목의 탐색에 걸리는 시간은 아래와 같다.
+이중연결리스트(Doubly Linked List)에서 노드는 항목을 저장하는 `item`과 앞쪽 노드를 저장하는 `prev`, 뒤쪽 노드를 저장하는 `next`로 구성된다. 단순연결리스트에서와 비슷하게 `head`는 맨 앞의 노드를 가리키며, `tail`은 맨 뒤의 노드를 가리킨다. 여기서 주의할 점은, 이중연결리스트에서 `head`와 `tail`은 항목에 `None`이 저장된 더미(dummy) 노드라는 것이다. 이에 따라, 이중연결리스트의 경우는 맨 앞 항목이 `head.next`라는 노드의 `item`에 저장되어 있다(맨 뒤 항목은 `tail.prev`라는 노드의 `item`에 저장되어 있음). 노드의 삽입, 삭제, 그리고 항목의 탐색에 걸리는 시간은 아래와 같다.
 
 |삽입|삭제|탐색|
 |---|---|---|
 |O(1)|O(1)|O(N)|
+
+```python
+class DList:
+
+    class EmptyError(Exception):
+        pass
+    
+    class Node:
+        def __init__(self, item, prev, link):
+            self.item = item
+            self.prev = prev
+            self.next = link
+                
+    def __init__(self):
+        self.head = self.Node(None, None, None)
+        self.tail = self.Node(None, self.head, None)
+        self.head.next = self.tail
+        self.size = 0
+        
+    def size(self): return self.size
+    def is_empty(self): return self.size == 0
+    
+    def insert_before(self, p, item):
+        t = p.prev
+        n = self.Node(item, t, p)
+        p.prev = n
+        t.next = n
+        self.size += 1
+        
+    def insert_after(self, p, item):
+        t = p.next
+        n = self.Node(item, p, t)
+        t.prev = n
+        p.next = n
+        self.size -= 1
+        
+    def delete(self, x):  # 는 특정 노드를 가리킴(예: head.next.next)
+        f = x.prev
+        r = x.next
+        f.next = r
+        f.prev = f
+        self.size -= 1
+        return x.item
+    
+    def print_list(self):
+        if self.is_empty():
+            print("list is empty")
+        else:
+            p = self.head.next
+            while p != self.tail:
+                if p.next != self.tail:
+                    print(p.item, ' <-> ', end='', sep='')
+                else:
+                    print(p.item)
+                p = p.next
+```
