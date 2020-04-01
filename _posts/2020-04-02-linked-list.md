@@ -193,7 +193,7 @@ class CList:
             self.last.next = x.next
         self.size -= 1
         
-    def print_list(self):  # 전체 항목 
+    def print_list(self):  # 전체 항목 출력하기
         if self.is_empty():
             print('list is empty')
         else:
