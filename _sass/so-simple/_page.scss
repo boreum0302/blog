@@ -251,11 +251,12 @@
     }
 
     a {
-      color: inherit;
+      color: #267CB9;
       text-decoration: none;
 
       &:hover {
         text-decoration: none;
+        text-weight: bolder;
       }
     }
   }
