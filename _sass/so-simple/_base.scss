@@ -93,7 +93,7 @@ dd {
 }
 
 pre {
-  @include fluid-type($min-vw, $max-vw, 12px, 14px);
+  @include fluid-type($min-vw, $max-vw, 8px, 10px);
 }
 
 figcaption {
