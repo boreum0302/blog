@@ -128,7 +128,7 @@ class Queue():
 |`queue.LifoQueue(maxsize)`|최대 크기가 `maxsize`인 스택 객체 생성하기|
 |`queue.PriorityQueue(maxsize)`|최대 크기가 `maxsize`인 우선순위 큐 객체 생성하기|
 
-각각의 클래스에 대한 메소드의 종류와 기능은 [여기](https://docs.python.org/ko/3/library/asyncio-queue.html)에 잘 설명되어 있다.
+각각의 클래스에 대한 메소드의 종류와 기능은 [**여기**](https://docs.python.org/ko/3/library/asyncio-queue.html)에 잘 설명되어 있다.
 
 ### `deque`
 
