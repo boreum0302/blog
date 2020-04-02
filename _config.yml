@@ -32,7 +32,7 @@ mathjax:
   tags: "ams"
 google_fonts:
   - name: "Noto Serif KR"
-    weights: "400,700"
+    weights: "200,600"
   - name: "Nanum Gothic Coding"
     weights: "400,700"
 google_analytics: ""
