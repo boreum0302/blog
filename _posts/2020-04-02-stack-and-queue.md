@@ -104,7 +104,7 @@ class Queue():
             return temp
         
     def print_queue(self):  # 전체 항목 출력하기
-        print('front -> ', end='')
+        print('head -> ', end='')
         p = self.head
         while p:
             if p.next != None:
@@ -116,6 +116,7 @@ class Queue():
 ```
 
 ## 데크
+스택과 큐를 혼합한 형태이며, 이중연결리스트로 구현하는 것이 적절하다.
 
 ## 관련된 파이썬 라이브러리
 
