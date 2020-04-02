@@ -1,5 +1,5 @@
 ---
-title: "스택(LIFO)과 큐(FIFO), 그리고 데크"
+title: "스택, 큐, 그리고 데크"
 categories:
   - Data Structure
 tags:
@@ -122,3 +122,6 @@ class Queue():
 ### `queue`
 
 ### `deque`
+
+---
+**출처** 파이썬과 함께하는 자료구조의 이해 / 양성봉 지음 / 생능출판사
