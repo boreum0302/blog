@@ -35,6 +35,8 @@ google_fonts:
     weights: "400,700"
   - name: "Noto Sans KR"
     weights: "400,700"
+  - name: "Nanum Gothic Coding"
+    weights: "400,700"
 google_analytics: ""
 google_site_verification: "UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y"
 
