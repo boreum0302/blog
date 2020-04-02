@@ -31,9 +31,9 @@ mathjax:
   combo: "tex-svg"
   tags: "ams"
 google_fonts:
-  - name: "Nanum Myeongjo"
+  - name: "Noto Serif KR"
     weights: "400,700"
-  - name: "Nanum Gothic"
+  - name: "Noto Sans KR"
     weights: "400,700"
 google_analytics: ""
 google_site_verification: "UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y"
