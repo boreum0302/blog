@@ -37,6 +37,7 @@ google_fonts:
     weights: "400,700"
 google_analytics: ""
 google_site_verification: "UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y"
+skin: "/assets/css/skins/light.css"
 
 # Liquid
 liquid:
