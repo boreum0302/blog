@@ -12,12 +12,57 @@ tags:
 
 ## 스택
 
-먼저 단순연결리스트로 스택을 구현하자. `pop()`과 `push()`는 각각 맨 앞에 노드를 삽입하는 메소드이다. 단순연결리스트의 `insert_front()`와 `delete_front()` 메소드와 완전히 동일하다. 
+먼저 단순연결리스트로 스택을 구현하자. `pop()`은 맨 앞의 노드를 삭제한 뒤 삭제된 노드의 항목을 반환하는 메소드이고, `push()`는 새 노드를 맨 앞에 삽입하는 메소드이다.
+
+```python
+class Stack():
+    
+    class EmptyError(Exception):
+        pass
+
+    class Node:
+        def __init__(self, item, link):
+            self.item = item
+            self.next = link
+
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def size(self): return self.size
+    def is_empty(self): return self.size == 0
+    
+    def push(self, item):  # 맨 앞에 노드 삽입하기
+        if self.is_empty():
+            self.head = self.Node(item, None)
+        else:
+            self.head = self.Node(item, self.head)
+        self.size += 1
+    
+    def pop(self):  # 맨 앞의 노드 삭제하고 항목 반환하기
+        if self.is_empty():
+            raise EmptyError('Underflow')
+        else:
+            temp = self.head.item
+            self.head = self.head.next
+            self.size -= 1
+            return temp
+    
+    def print_stack(self):  # 전체 항목 출력하기
+        print('top -> ', end='')
+        p = self.head
+        while p:
+            if p.next != None:
+                print(p.item, '-> ', end='')
+            else:
+                print(p.item)
+            p = p.next
+```
 
 ## 큐
 
-### 파이썬 라이브러리 `queue`
+## 파이썬 라이브러리 `queue`
 
 ## 데크
 
-### 파이썬 라이브러리 `queue`
+## 파이썬 라이브러리 `deque`
