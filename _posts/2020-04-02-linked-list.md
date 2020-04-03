@@ -3,7 +3,7 @@ title: "연결리스트"
 categories:
   - Data Structure
 tags:
-  - Python
+  - python
 ---
 
 연결리스트의 일종인 단순연결리스트, 이중연결리스트, 원형연결리스트에 대해 정리했다.
