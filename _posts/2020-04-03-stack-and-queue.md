@@ -1,5 +1,5 @@
 ---
-title: "스택, 큐, 그리고 데크"
+title: "스택, 큐, 데크"
 categories:
   - Data Structure
 tags:
