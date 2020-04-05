@@ -1,5 +1,5 @@
 ---
-title: "파이썬과 함께하는 자료구조의 이해: 연결리스트"
+title: "파이썬 자료구조: 연결리스트"
 categories:
   - Data Structure
 tags:
