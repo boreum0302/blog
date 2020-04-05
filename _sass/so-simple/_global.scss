@@ -338,7 +338,8 @@
 
   li {
     padding: 0.3em 0;
-    font-family: $base-font-family;
+    font-family: "Noto Sans KR";
+    list-style-type: decimal-leading-zero;
 
     a {
       display: inline-block;
@@ -346,7 +347,6 @@
       font-size: 0.75rem;
       font-weight: 600;
       text-decoration: none;
-      border-bottom: 1px dotted transparent;
     }
 
     ol {
