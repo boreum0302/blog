@@ -319,3 +319,39 @@
       }
     }
   }
+
+#markdown-toc {	
+    display: none;	
+    height: 0;	
+    margin-bottom: 0;	
+    padding-left: 2rem;	
+    overflow: hidden;	
+    font-size: 0.9rem;	
+    -webkit-transition: height 350ms ease;	
+    transition: height 350ms ease;	
+
+    &.js-toc-is-open {	
+      display: block;	
+      height: auto;	
+    }	
+  }	
+
+  li {	
+    padding: 0.3em 0;	
+    font-family: "Noto Sans KR";	
+    list-style-type: decimal-leading-zero;	
+
+    a {	
+      display: inline-block;	
+      color: inherit;	
+      font-size: 0.75rem;	
+      font-weight: 600;	
+      text-decoration: none;	
+    }	
+
+    ol {	
+      padding-left: 0.5rem;	
+      list-style-type: disc;	
+    }	
+  }	
+}
