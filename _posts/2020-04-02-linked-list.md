@@ -72,7 +72,7 @@ tags:
             p = p.next
         return None
         
-    # 전체 item 출력하기
+    # 전체 항목 출력하기
     def print_list(self):
         p = self.head
         while p:
