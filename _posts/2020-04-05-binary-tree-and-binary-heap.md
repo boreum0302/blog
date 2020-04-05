@@ -1,5 +1,5 @@
 ---
-title: "트리, 이진트리, 이진힙"
+title: "이진트리와 이진힙"
 categories:
   - Data Structure
 tags:
