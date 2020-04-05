@@ -6,10 +6,9 @@ tags:
   - python
 ---
 
-단순연결리스트를 이용하여 맨 앞에서만 항목을 삭제하거나 삽입하는 자료구조인 스택(stack)과 맨 앞에서는 항목을 삭제하기만 하고 맨 뒤에서는 항목을 삽입하기만 하는 자료구조인 큐(Queue)를 구현했다. 스택에서는 마지막에 들어온 항목이 가장 먼저 나가므로 후입선출(Last In First Out, LIFO), 큐에서는 먼저 들어온 항목일수록 먼저 나가므로 선입선출(First In First Out, FIFO) 규칙이 적용된다. 덱(deque)은 맨 뒤와 맨 앞에서 삭제와 삽입이 가능한 자료구조이다. 파이썬에는 스택과 큐 객체를 생성할 수 있는 `queue` 모듈과 데크 객체를 생성할 수 있는 `deque` 모듈이 존재한다. 
+단순연결리스트를 이용하여 맨 앞에서만 항목을 삭제하거나 삽입하는 자료구조인 스택(stack)과 맨 앞에서는 항목을 삭제하기만 하고 맨 뒤에서는 항목을 삽입하기만 하는 자료구조인 큐(Queue)를 구현했다. 스택에서는 마지막에 들어온 항목이 가장 먼저 나가므로 후입선출(Last In First Out, LIFO), 큐에서는 먼저 들어온 항목일수록 먼저 나가므로 선입선출(First In First Out, FIFO) 규칙이 적용된다. 덱(deque)은 맨 뒤와 맨 앞에서 삭제와 삽입이 둘 다 가능한 자료구조이다. 파이썬에는 스택과 큐 객체를 생성할 수 있는 `queue` 모듈과 데크 객체를 생성할 수 있는 `deque` 모듈이 존재한다. 
 
 ## 스택 
-
 `pop()`은 맨 앞의 노드를 삭제한 뒤 삭제된 노드의 항목을 반환하는 메소드이고, `push()`는 새 노드를 맨 앞에 삽입하는 메소드이다. 각각의 연산에 걸리는 시간은 $$O(1)$$이다. 
 
 ```python
@@ -30,14 +29,16 @@ class Stack():
     def size(self): return self.size
     def is_empty(self): return self.size == 0
     
-    def push(self, item):  # 맨 앞에 노드 삽입하기
+    # item을 항목으로 가지는 노드 맨 앞에 삽입하기
+    def push(self, item):  
         if self.is_empty():
             self.head = self.Node(item, None)
         else:
             self.head = self.Node(item, self.head)
         self.size += 1
     
-    def pop(self):  # 맨 앞의 노드 삭제하고 항목 반환하기
+    # 맨 앞의 노드 삭제하고 항목 반환하기
+    def pop(self):  
         if self.is_empty():
             raise EmptyError('Underflow')
         else:
@@ -45,8 +46,9 @@ class Stack():
             self.head = self.head.next
             self.size -= 1
             return temp
-    
-    def print_stack(self):  # 전체 항목 출력하기
+   
+   # 전체 항목 출력하기
+    def print_stack(self):  
         print('top -> ', end='')
         p = self.head
         while p:
@@ -58,8 +60,7 @@ class Stack():
 ```
 
 ## 큐
-
-비슷하게 단순연결리스트로 큐를 구현할 수 있다. `head`가 맨 앞의 노드를 가리키는 것은 단순연결리스트에서와 같지만, 맨 뒤에 노드를 삽입하는 연산을 구현하기 위해 `tail`이라는 변수가 추가되어 맨 뒤의 노드를 가리키는 것에 주의하자. 맨 뒤에 노드를 삽입하는 `add()`라는 메소드와 맨 앞의 노드를 삭제하고 삭제된 노드의 항목을 반환하는 `remove()`라는 메소드가 존재하며, 각각의 연산에 걸리는 시간은 $$O(1)$$이다.
+맨 뒤에다 항목을 삽입해야 하기 때문에 큐 객체는 맨 뒤 노드를 가리키는 `tail`이라는 속성을 가진다. 메소드에는 맨 앞의 노드를 삭제하고 삭제된 노드의 항목을 반환하는 `remove()`와, 맨 뒤에 `item`을 항목으로 가지는 노드를 삽입하는 `add(item)`이 존재한다. 각각에 걸리는 시간은 $$O(1)$$이다.
 
 ```python
 class Queue():
@@ -80,7 +81,8 @@ class Queue():
     def size(self): return self.size
     def is_empty(self): return self.size == 0        
         
-    def add(self, item):  # 맨 뒤에 노드 삽입하기
+    # item을 항목으로 가지는 노드 맨 뒤에 삽입하기    
+    def add(self, item):
         new_node = self.Node(item, None)
         if self.is_empty():
             self.head = new_node
@@ -90,7 +92,8 @@ class Queue():
             self.tail = new_node
         self.size += 1
     
-    def remove(self):  # 맨 앞의 노드 삭제하고 항목 반환하기
+    # 맨 앞의 노드 삭제하고 항목 반환하기
+    def remove(self):
         if self.is_empty():
             raise EmptyError('Underflow')
         else:
@@ -100,8 +103,9 @@ class Queue():
             if self.size == 0:
                 tail = None
             return temp
-        
-    def print_queue(self):  # 전체 항목 출력하기
+            
+    # 전체 항목 출력하기    
+    def print_queue(self):  
         print('head -> ', end='')
         p = self.head
         while p:
@@ -114,7 +118,7 @@ class Queue():
 ```
 
 ## 데크
-스택과 큐를 혼합한 형태이며, 만일 직접 구현한다면 이중연결리스트로 구현하는 것이 적절할 것이다. 이중연결리스트를 사용할 경우 삽입과 삭제 연산에 걸리는 시간은 $$O(1)$$이다. 
+스택과 큐를 혼합한 형태이므로 이중연결리스트로 구현하는 것이 적절하다.
 
 ## 관련된 파이썬 모듈
 
