@@ -127,3 +127,5 @@ footer_links:
       icon: fas fa-envelope-square
       
 copyright: Powered by [**Jekyll**](https://jekyllrb.com/) and [**So Simple Theme**](https://github.com/mmistakes/so-simple-theme).
+
+markdown: kramdown
