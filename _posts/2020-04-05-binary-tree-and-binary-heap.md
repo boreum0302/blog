@@ -212,7 +212,7 @@ class BHeap:
             i = k  # 한 층 내려가기
 ```
 
-### 힙 생성하기
+### 상향식 힙 만들기(bottom-up heap construction)
 ```python
     # self.a를 힙 속성을 만족하게끔 재배열함
     def create_heap(self):
