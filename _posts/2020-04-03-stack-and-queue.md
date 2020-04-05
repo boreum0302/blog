@@ -1,5 +1,5 @@
 ---
-title: "파이썬과 함께하는 자료구조의 이해: 스택, 큐, 덱"
+title: "파이썬 자료구조: 스택, 큐, 덱"
 categories:
   - Data Structure
 tags:
