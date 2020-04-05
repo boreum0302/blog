@@ -1,5 +1,5 @@
 ---
-title: "파이썬 자료구조: 스택, 큐, 덱"
+title: "파이썬 자료구조: 스택과 큐"
 categories:
   - Data Structure
 tags:
