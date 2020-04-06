@@ -24,9 +24,28 @@ def binary_search(a, left, right, t):
     else:
         binary_search(a, mid + 1, right, t)
 ```
-리스트 `a`가 정렬되어 있었다면 탐색에 걸리는 시간은 $$O(log N)$$이다. 정렬되어 있지 않았다면, 순차탐색(sequential search)을 수행해야 하기 때문에 $$O(N)$$의 시간이 걸린다.
+리스트 `a`가 정렬되어 있었다면 탐색에 걸리는 시간은 $$O(log N)$$이다. 만일 정렬되어 있지 않았다면, 순차탐색(sequential search)을 수행해야 하기 때문에 $$O(N)$$의 시간이 걸린다.
 
 ## 이진탐색트리(binary search tree)
+```python
+class Node:
+    
+    def __init__(self, key, value, left=None, right=None):
+        self.key = key
+        self.value = value
+        self.left = left
+        self.right = right
+        
+class BST:
+    
+    class EmptyError(Exception):
+        pass
+    
+    def __init__(self):
+        self.root = None
+```
+
+이진탐색트리(binary search tree)는 각 노드 `node`의 키값이 `node`의 왼쪽 서브트리에 있는 노드들의 키값들보다 크고, `n`의 오른쪽 서브트리에 있는 노드의 키값들보다 작은 이진트리이다. 그래서 이진탐색트리에서 중위순회를 수행하면 아래와 같이 정렬된 출력을 얻게 된다.
 
 ### 키(key) 탐색하기
 
