@@ -81,12 +81,13 @@ class BST:
 
 ### 키(key)가 최솟값인 노드 삭제하기
 ```python
+    # 키값이 가장 작은 노드 삭제하기
     def delete_min(self):
         if self.root == None:
             raise EmptyError('Underflow')
         self.root = self.del_min(self.root)
    
-   def del_min(self, node):
+    def del_min(self, node):
         if node.left == None:
             return node.right
         node.left = self.del_min(node.left)
@@ -100,6 +101,7 @@ class BST:
 삭제되는 노드 `node`의 자식 수에 따라 처리 방법이 달라진다. 자식이 없는 경우 `node`의 부모에 `node` 대신 `None`을 연결하고, 자식이 하나라면 `node`의 부모에 `node`의 자식을 직접 연결한다. 자식이 둘일 때가 좀 까다롭다. 먼저 중위후속자(inorder successor)의 개념을 알아야 한다. 노드 `node`의 중위후속자는 트리를 중위순회할 때 `node` 직후에 방문되는 노드이다. `node`의 자식이 둘이라면, `node`의 중위후속자를 떼어내서 `node`가 있던 자리에 올리면 된다. 이때, `node`의 중위후속자는 `node`의 오른쪽 서브트리에서 키값이 가장 작은 노드이기 때문에 `node`의 오른쪽 서브트리에서 `del_min()` 연산을 수행해주어야 한다.  
 
 ```python
+    # 키값이 key인 노드 삭제하기
     def delete(self, key):
         self.root = self.del_node(self.root, key)
         
