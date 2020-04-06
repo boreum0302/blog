@@ -96,6 +96,15 @@ class BST:
 ![(1)]({{ '/images/2020-04-07-(1).png' }}){: .align-center}
 
 ### 임의의 키(key)를 가지는 노드 삭제하기
+
+삭제되는 노드 `node`의 자식 수에 따라 처리 방법이 달라진다.  
+
+|구분|방법|
+|---|---|
+|자식이 없음|`node`의 부모에 `node` 대신에 `None`을 연결함|
+|자식이 하나|`node`의 부모와 `node`의 자식을 직접 연결함|
+|자식이 |이진탐색트리를 중위순회할 때 `node`를 방문한 직후에 방문하게 되는 노드(`node`의 중위후속자)를 `node`자리로 옮김|  
+
 ```python
     def delete(self, key):
         self.root = self.del_node(self.root, key)
@@ -119,14 +128,6 @@ class BST:
             node.left = target.left  # target의 왼쪽 서브트리가 그대로 node의 왼쪽 서브트리가 되어야 함
         return node
 ```
-
-삭제되는 노드 `node`의 자식 수에 따라 처리 방법이 달라진다.  
-
-|구분|삭제 방법|
-|---|---|
-|자식이 없음|`node`의 부모에 `node` 대신에 `None`을 연결함|
-|자식이 하나|`node`의 부모와 `node`의 자식을 직접 연결함|
-|자식이 둘|이진탐색트리를 중위순회할 때 `node`를 방문한 직후에 방문하게 되는 노드(`node`의 중위후속자)를 `node`자리로 옮김|  
 
 ![(1)]({{ '/images/2020-04-07-(2).png' }}){: .align-center}
 
