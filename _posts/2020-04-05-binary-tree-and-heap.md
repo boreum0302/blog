@@ -11,7 +11,7 @@ tags:
 - TABLE OF CONTENTS
 {:toc}
 
-## 트리
+## 트리(tree)
 일반적으로 트리의 생김새를 묘사하기 위해 아래와 같은 용어들을 사용한다.
 
 |용어|내용|
@@ -30,8 +30,8 @@ tags:
 |높이(height)|트리의 최대 레벨|
 |키(key)|노드에 저장된 값으로 탐색에 사용됨|
 
-## 이진트리
-이진트리는 각각의 노드의 자식이 두 개 이하인 트리이다. 이진트리 중 완전이진트리(complete binary tree)와 포화이진트리(full binary tree)는 특별한 형태를 가진다.
+## 이진트리(binary tree)
+이진트리(binary tree)는 각각의 노드의 자식이 두 개 이하인 트리이다. 이진트리 중 완전이진트리(complete binary tree)와 포화이진트리(full binary tree)는 특별한 형태를 가진다.
 
 ![(1)]({{ '/images/2020-04-04-(1).png' }}){: .align-center}
 
@@ -157,8 +157,8 @@ class BinaryTree:
         return self.is_same(my_root.left, other_root.left) and self.is_same(my_root.right, other_root.right)
 ```
 
-## 힙
-힙은 부모의 우선순위가 항상 자식의 우선순위보다 높은 완전이진트리이다. 이때 각각의 노드의 우선순위는 키값이 결정한다. 이진힙에서 키값이 작을수록 우선순위가 높은 경우를 최소힙(minimum heap)이라 하고, 키값이 클수록 우선순위가 높은 경우를 최대힙(maximum heap)이라 한다. 이하 '힙'은 '최소힙'을 의미한다.
+## 힙(heap)
+힙(heap)은 부모의 우선순위가 항상 자식의 우선순위보다 높은 완전이진트리이다. 이때 각각의 노드의 우선순위는 키값이 결정한다. 이진힙에서 키값이 작을수록 우선순위가 높은 경우를 최소힙(minimum heap)이라 하고, 키값이 클수록 우선순위가 높은 경우를 최대힙(maximum heap)이라 한다. 이하 '힙'은 '최소힙'을 의미한다.
 
 ### 힙 객체 생성하기
 ![(2)]({{ '/images/2020-04-04-(2).png' }}){: .align-center}
