@@ -74,7 +74,7 @@ class BST:
         return self.minimum(self.root)
     
     def minimum(self, node):
-        if node.left == None:  # node 왼쪽 자식이 없다면 그 노드의 키값이 가장 작은 것임
+        if node.left == None:  # node의 왼쪽 자식이 없다면 그 노드의 키값이 가장 작은 것임
             return node
         return self.minimum(node.left)  # 왼쪽 자식으로 내려가기
 ```
