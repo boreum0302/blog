@@ -125,7 +125,28 @@ class BST:
         return node
 ```
 
-![(1)]({{ '/images/2020-04-07-(2).png' }}){: .align-center}
+![(2)]({{ '/images/2020-04-07-(2).png' }}){: .align-center}
+
+### 임의의 키(key)를 가지는 노드 삽입하기
+
+```python
+    # key와 value를 키값과 항목으로 가지는 노드 삽입하기
+    def put(self, key, value):
+        self.root = self.put_item(self.root, key, value)
+        
+    def put_item(self, node, key, value):
+        if node == None:
+            return Node(key, value)  # 새 노드 생성하기
+        if node.key > key:
+            node.left = self.put_item(node.left, key, value)
+        elif node.key < key:
+            node.right = self.put_item(node.right, key, value)
+        else:  # key가 이미 트리 내부에 존재하면
+            node.value = value  # value를 갱신하기
+        return node
+```
+
+![(3)]({{ '/images/2020-04-07-(3).png' }}){: .align-center}
 
 ### 연산의 수행시간 계산하기 
 탐색, 삽입, 삭제 연산의 수행시간은 이진탐색트리의 높이에 비례한다. 따라서 최악의 경우에 수행시간은  $$O(N)$$이다. 하지만 빈 이진탐색트리에 랜덤하게 선택된 $$N$$개의 키를 삽입할 때 트리의 높이는 약 $$1.39logN$$임이 알려져 있기에 평균 수행시간은 $$O(N)$$보다 작다.
