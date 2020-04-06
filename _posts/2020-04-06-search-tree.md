@@ -10,9 +10,23 @@ tags:
 - TABLE OF CONTENTS
 {:toc}
 
-## 이진탐색트리(binary search tree)
+## 이진탐색(binary search)
+```python
+# 정수들이 정렬된 리스트 a에서 t라는 값이 존재하는 index를 탐색하기
+def binary_search(a, left, right, t):
+    if left > right:
+        return None
+    mid = (left + right)//2
+    if a[mid] == t:
+        return mid
+    if a[mid] > t:
+        binary_search(a, left, mid - 1, t)
+    else:
+        binary_search(a, mid + 1, right, t)
+```
+리스트 `a`가 정렬되어 있었다면 탐색에 걸리는 시간은 $$O(log N)$$이다. 정렬되어 있지 않았다면, 순차탐색(sequential search)을 수행해야 하기 때문에 $$O(N)$$의 시간이 걸린다.
 
-### 이진탐색(binary search)
+## 이진탐색트리(binary search tree)
 
 ### 키(key) 탐색하기
 
