@@ -342,7 +342,6 @@ AVL 트리에서는 높이의 불균형이 발생했을 경우 이를 없애기 
 
 ### 임의의 키값을 가지는 노드 삽입하기
 ```python
-
     # key와 value를 키값과 항목으로 가지는 노드 삽입하기
     def put(self, key, value):
         self.root = self.put_item(self.root, key, value)
@@ -363,7 +362,6 @@ AVL 트리에서는 높이의 불균형이 발생했을 경우 이를 없애기 
 
 ### 임의의 키값을 가지는 노드 삭제하기
 ```python
-
     # 키값이 key인 노드 삭제하기
     def delete(self, key):
         self.root = self.del_node(self.root, key)
