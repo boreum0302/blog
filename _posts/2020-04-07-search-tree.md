@@ -98,16 +98,31 @@ class BST:
         return node
 ```
 
-```
-    50
-   /  \
-  30   80
- /  \   \
-10   40  90
-```
+```python
+   root     self.del_min(root)
+    50              50          
+   /  \            /  \
+  30  80    ->    30  80
+ /  \   \        /  \   \
+10  40  90      10  40  90
+ \
+ 15
 
-```
-
+# self.del_min(root)의 수행과정(이하 self.는 표기하지 않았음)
+del_min(root):
+    root.left = del_min(root.left)
+    del_min(root.left):
+        root.left.left = del_min(root.left.left)
+            del_min(root.left.left):
+                return root.left.left.right  # 15
+        return root.left  #   30
+                             /  \
+                            15  40
+    return root  #     50
+                      /  \
+                     30  80
+                    /  \   \
+                   15  40  90
 ```
 
 ### 임의의 키값을 가지는 노드 삭제하기 
@@ -159,8 +174,6 @@ class BST:
             node.value = value  # value를 갱신하기
         return node
 ```
-
-![(3)]({{ '/images/2020-04-07-(3).png' }}){: .align-center}
 
 ### 연산의 수행시간 계산하기 
 탐색, 삽입, 삭제 연산의 수행시간은 이진탐색트리의 높이에 비례한다. 따라서 최악의 경우에 수행시간은  $$O(N)$$이다. 하지만 빈 이진탐색트리에 랜덤하게 선택된 $$N$$개의 키를 삽입할 때 트리의 높이는 약 $$1.39logN$$임이 알려져 있기에 평균 수행시간은 $$O(N)$$보다 작다.
