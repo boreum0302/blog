@@ -181,7 +181,7 @@ del_node(root, 20):
                                                           #    35
                                                           #   /  \
                                                           #  30  40
-            return root.left.left  #   20
+            return root.left.left  #   25
                                    #  /  \
                                    # 10  40
                                    #     /
@@ -190,7 +190,7 @@ del_node(root, 20):
                                    #  30  40
         return root.left  #     50
                           #    /
-                          #   20
+                          #   25
                           #  /  \
                           # 10  45
                           #     /
@@ -201,7 +201,7 @@ del_node(root, 20):
                  #      /  \
                  #     50  70
                  #    /
-                 #   20
+                 #   25
                  #  /  \
                  # 10  45
                  #     /
