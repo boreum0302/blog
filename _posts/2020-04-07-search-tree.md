@@ -18,13 +18,18 @@ tags:
 ```python
 # 정수들이 정렬된 리스트 a에서 t라는 값이 존재하는 index를 탐색하기
 def binary_search(a, left, right, t):
+    
     if left > right:
         return None
+    
     mid = (left + right)//2
+    
     if a[mid] == t:
         return mid
+    
     if a[mid] > t:
         binary_search(a, left, mid - 1, t)
+    
     else:
         binary_search(a, mid + 1, right, t)
 ```
@@ -58,12 +63,16 @@ class BST:
         return self.get_item(self.root, key)  
         
     def get_item(self, node, key):
+        
         if node == None:
             return None
+        
         if node.key > key:  # 방문한 노드의 키값이 key보다 크다면
             return self.get_item(node.left, key)  # 왼쪽 서브트리 탐색하기
+        
         elif node.key < key:  # 방문한 노드의 키값이 key보다 작다면
             return self.get_item(node.right, key)  # 오른쪽 서브트리 탐색하기
+        
         else:  # 방문한 노드의 키값이 key와 같다면
             return node.value  # 노드의 항목 반환하기
 ```
@@ -73,13 +82,17 @@ class BST:
 ```python
     # 가장 작은 키값을 가진 노드 반환하기
     def min(self):
+        
         if self.root == None:
             return None
+        
         return self.minimum(self.root)
     
     def minimum(self, node):
+        
         if node.left == None:  # 방문한 노드의 왼쪽 자식이 없다면 그 노드의 키값이 가장 작은 것이므로
             return node  # 노드 반환하기
+        
         return self.minimum(node.left)  # 왼쪽 자식에서부터 다시 탐색 시작하기
 ```
 
@@ -87,14 +100,19 @@ class BST:
 ```python
     # 키값이 가장 작은 노드 삭제하기
     def delete_min(self):
+        
         if self.root == None:
             raise EmptyError('Underflow')
+        
         self.root = self.del_min(self.root)
    
     def del_min(self, node):
+        
         if node.left == None:
             return node.right
+        
         node.left = self.del_min(node.left)
+        
         return node
 ```
 
@@ -107,7 +125,6 @@ class BST:
 #  \
 #  15
 
-# self.는 생략됨
 del_min(root):
     root.left = del_min(root.left)
     del_min(root.left):
@@ -134,22 +151,34 @@ del_min(root):
         self.root = self.del_node(self.root, key)
         
     def del_node(self, node, key):
+        
         if node == None:
             return None
+        
         if node.key > key:
             node.left = self.del_node(node.left, key)
+        
         elif node.key < key:
             node.right = self.del_node(node.right, key)
+        
         else:  # 키값이 key인 노드를 찾음
+            
             if node.right == None:  # 노드의 오른쪽 자식이 없는 경우
                 return node.left  # 노드의 왼쪽 자식이 없다면 None을 반환하고 있다면 노드의 왼쪽 자식을 반환함
+            
             if node.left == None:  # 노드의 오른쪽 자식은 있지만 왼쪽 자식이 없는 경우
                 return node.right  # 노드의 오른쪽 자식을 반환함
+            
             target = node  # 삭제될 노드
-            node = self.minimum(target.right)  # target의 중위후속자는 target의 오른쪽 서브트리에서 가장 키값이 작은 노드인 minimum(target.right)임
-            # node를 target이 있던 자리로 올리기 위해서는
-            node.right = self.del_min(target.right)  # node가 삭제된 target의 오른쪽 서브트리가 node의 오른쪽 서브트리가 되어야 하며
-            node.left = target.left  # target의 왼쪽 서브트리가 그대로 node의 왼쪽 서브트리가 되어야 함
+            node = self.minimum(target.right)  # target의 중위후속자는 minimum(target.right)임
+            
+            # node를 target이 있던 자리에 올리기 위해서는
+            
+            node.right = self.del_min(target.right)  # target의 오른쪽 서브트리에서 node를 삭제한 것이
+                                                     # node의 오른쪽 아래에 연결되어야 하며
+            
+            node.left = target.left  # target의 왼쪽 서브트리가
+                                     # node의 왼쪽 아래에 연결되어야 함
         return node
 ```
 
@@ -168,7 +197,6 @@ del_min(root):
 #   \
 #   30
 
-# self.는 생략됨
 del_node(root, 20):
     root.left = del_node(root.left, 20)
     del_node(root.left, 20):
@@ -220,14 +248,19 @@ del_node(root, 20):
         self.root = self.put_item(self.root, key, value)
         
     def put_item(self, node, key, value):
+        
         if node == None:
             return Node(key, value)  # 새 노드 생성하기
+        
         if node.key > key:
             node.left = self.put_item(node.left, key, value)
+        
         elif node.key < key:
             node.right = self.put_item(node.right, key, value)
+        
         else:  # key가 이미 트리 내부에 존재하면
             node.value = value  # value를 갱신하기
+        
         return node
 ```
 
