@@ -99,22 +99,21 @@ class BST:
 ```
 
 ```python
-#    root     self.del_min(root)
-#     50              50          
-#    /  \            /  \
-#   30  80    ->    30  80
-#  /  \   \        /  \   \
-# 10  40  90      10  40  90
+#     50      
+#    /  \         
+#   30  80   
+#  /  \   \    
+# 10  40  90    
 #  \
 #  15
 
-# self.del_min(root)의 수행과정
-self.del_min(root):
-    root.left = self.del_min(root.left)
-    self.del_min(root.left):
-        root.left.left = self.del_min(root.left.left)
-            self.del_min(root.left.left):
-                return root.left.left.right  # 15
+# self.는 생략됨
+del_min(root):
+    root.left = del_min(root.left)
+    del_min(root.left):
+        root.left.left = del_min(root.left.left)
+        del_min(root.left.left):
+            return root.left.left.right  # 15
         return root.left  #   30
                           #  /  \
                           # 15  40
@@ -154,7 +153,64 @@ self.del_min(root):
         return node
 ```
 
-![(2)]({{ '/images/2020-04-07-(2).png' }}){: .align-center}
+```python
+#       60
+#      /  \
+#     50  70
+#    /
+#   20
+#  /  \
+# 10  45
+#     /
+#    35
+#   /  \
+#  25  40
+#   \
+#   30
+
+# self.는 생략됨
+del_node(root, 20):
+    root.left = del_node(root.left, 20)
+    del_node(root.left, 20):
+        root.left.left = del_node(root.left.left, 20)
+        del_node(root.left.left, 20):
+            target = root.left.left  # 20
+            root.left.left = minimum(target.right)  # 25
+            root.left.left.right = del_min(target.right)  #      45
+                                                          #     /
+                                                          #    35
+                                                          #   /  \
+                                                          #  30  40
+            return root.left.left  #   20
+                                   #  /  \
+                                   # 10  40
+                                   #     /
+                                   #    35
+                                   #   /  \
+                                   #  30  40
+        return root.left  #     50
+                          #    /
+                          #   20
+                          #  /  \
+                          # 10  45
+                          #     /
+                          #    35
+                          #   /  \
+                          #  30  40
+    return root  #       60
+                 #      /  \
+                 #     50  70
+                 #    /
+                 #   20
+                 #  /  \
+                 # 10  45
+                 #     /
+                 #    35
+                 #   /  \
+                 #  25  40
+                 #   \
+                 #   30
+```
 
 ### 임의의 키값을 가지는 노드 삽입하기
 
