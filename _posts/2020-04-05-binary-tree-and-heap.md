@@ -33,9 +33,6 @@ tags:
 ## 이진트리(binary tree)
 이진트리(binary tree)는 각각의 노드의 자식이 두 개 이하인 트리이다. 이진트리 중 완전이진트리(complete binary tree)와 포화이진트리(perfect binary tree)는 특별한 형태를 가진다.
 
-![(1)]({{ '/images/2020-04-05-complete-binary-tree.png' }}){: .align-center}
-![(2)]({{ '/images/2020-04-05-perfect-binary-tree.png' }}){: .align-center}
-
 |용어|정의|
 |---|---|
 |완전이진트리|마지막 레벨을 제외하면 각각의 레벨이 노드로 완전히 채워져 있고, 마지막 레벨은 노드가 왼쪽에서부터 차곡차곡 채워진 트리|
@@ -163,8 +160,6 @@ class BinaryTree:
 
 ### 힙 객체 생성하기
 힙을 구현할 때는 리스트를 사용한다. 트리에서 레벨순회를 하며 `a[1]`부터 차곡차곡 키값을 저장하면, `a[i]`의 자식은 `a[2*i]`와 `a[2*i + 1]`에 존재하고 `a[j]`의 부모는 `a[j//2]`에 존재하게 된다.
-
-![(3)]({{ '/images/2020-04-05-heap-index.png' }}){: .align-center}
 
 ```python
 class BHeap:
