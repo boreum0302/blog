@@ -12,6 +12,9 @@ tags:
 {:toc}
 
 ## 이진탐색(binary search)
+
+리스트 `a`가 정렬되어 있었다면 탐색에 걸리는 시간은 $$O(log N)$$이다. 만일 정렬되어 있지 않았다면, 순차탐색(sequential search)을 수행해야 하기 때문에 $$O(N)$$의 시간이 걸린다.
+
 ```python
 # 정수들이 정렬된 리스트 a에서 t라는 값이 존재하는 index를 탐색하기
 def binary_search(a, left, right, t):
@@ -25,9 +28,11 @@ def binary_search(a, left, right, t):
     else:
         binary_search(a, mid + 1, right, t)
 ```
-리스트 `a`가 정렬되어 있었다면 탐색에 걸리는 시간은 $$O(log N)$$이다. 만일 정렬되어 있지 않았다면, 순차탐색(sequential search)을 수행해야 하기 때문에 $$O(N)$$의 시간이 걸린다.
 
 ## 이진탐색트리(binary search tree)
+
+이진탐색트리(binary search tree)는 각 노드 `node`의 키값이 `node`의 왼쪽 서브트리에 있는 노드들의 키값들보다 크고, `n`의 오른쪽 서브트리에 있는 노드의 키값들보다 작은 이진트리이다. 그래서 이진탐색트리에서 중위순회를 수행하면 정렬된 출력을 얻게 된다.
+
 ```python
 class Node:
     
@@ -46,8 +51,6 @@ class BST:
         self.root = None
 ```
 
-이진탐색트리(binary search tree)는 각 노드 `node`의 키값이 `node`의 왼쪽 서브트리에 있는 노드들의 키값들보다 크고, `n`의 오른쪽 서브트리에 있는 노드의 키값들보다 작은 이진트리이다. 그래서 이진탐색트리에서 중위순회를 수행하면 정렬된 출력을 얻게 된다.
-
 ### 임의의 키값을 가지는 노드 탐색하기
 ```python
     # key를 키값으로 가지는 노드의 항목 반환하기
@@ -57,12 +60,12 @@ class BST:
     def get_item(self, node, key):
         if node == None:
             return None
-        if node.key > key:
+        if node.key > key:  # 방문한 노드의 키값이 key보다 크다면
             return self.get_item(node.left, key)  # 왼쪽 서브트리 탐색하기
-        elif node.key < key:
+        elif node.key < key:  # 방문한 노드의 키값이 key보다 작다면
             return self.get_item(node.right, key)  # 오른쪽 서브트리 탐색하기
-        else:
-            return node.value
+        else:  # 방문한 노드의 키값이 key와 같다면
+            return node.value  # 노드의 항목 반환하기
 ```
 
 ### 키값이 가장 작은 노드 탐색하기
@@ -75,9 +78,9 @@ class BST:
         return self.minimum(self.root)
     
     def minimum(self, node):
-        if node.left == None:  # node의 왼쪽 자식이 없다면 그 노드의 키값이 가장 작은 것임
-            return node
-        return self.minimum(node.left)  # 왼쪽 자식으로 내려가기
+        if node.left == None:  # 방문한 노드의 왼쪽 자식이 없다면 그 노드의 키값이 가장 작은 것이므로
+            return node  # 노드 반환하기
+        return self.minimum(node.left)  # 왼쪽 자식에서부터 다시 탐색 시작하기
 ```
 
 ### 키값이 가장 작은 노드 삭제하기 
@@ -95,7 +98,17 @@ class BST:
         return node
 ```
 
-![(1)]({{ '/images/2020-04-07-(1).png' }}){: .align-center}
+```
+    50
+   /  \
+  30   80
+ /  \   \
+10   40  90
+```
+
+```
+
+```
 
 ### 임의의 키값을 가지는 노드 삭제하기 
 
