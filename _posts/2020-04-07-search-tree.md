@@ -96,6 +96,30 @@ class BST:
         return self.minimum(node.left)  # 왼쪽 자식에서부터 다시 탐색 시작하기
 ```
 
+### 임의의 키값을 가지는 노드 삽입하기
+
+```python
+    # key와 value를 키값과 항목으로 가지는 노드 삽입하기
+    def put(self, key, value):
+        self.root = self.put_item(self.root, key, value)
+        
+    def put_item(self, node, key, value):
+        
+        if node == None:
+            return Node(key, value)  # 새 노드 생성하기
+        
+        if node.key > key:
+            node.left = self.put_item(node.left, key, value)
+        
+        elif node.key < key:
+            node.right = self.put_item(node.right, key, value)
+        
+        else:  # key가 이미 트리 내부에 존재하면
+            node.value = value  # value를 갱신하기
+        
+        return node
+```
+
 ### 키값이 가장 작은 노드 삭제하기 
 ```python
     # 키값이 가장 작은 노드 삭제하기
@@ -235,37 +259,11 @@ del_node(root, 20):
                  #   30
 ```
 
-### 임의의 키값을 가지는 노드 삽입하기
-
-```python
-    # key와 value를 키값과 항목으로 가지는 노드 삽입하기
-    def put(self, key, value):
-        self.root = self.put_item(self.root, key, value)
-        
-    def put_item(self, node, key, value):
-        
-        if node == None:
-            return Node(key, value)  # 새 노드 생성하기
-        
-        if node.key > key:
-            node.left = self.put_item(node.left, key, value)
-        
-        elif node.key < key:
-            node.right = self.put_item(node.right, key, value)
-        
-        else:  # key가 이미 트리 내부에 존재하면
-            node.value = value  # value를 갱신하기
-        
-        return node
-```
-
 ### 연산의 수행시간 계산하기 
-탐색, 삭제, 삽입 연산의 수행시간은 이진탐색트리의 높이에 비례한다. 따라서 최악의 경우에 수행시간은  $$O(N)$$이다. 하지만 빈 이진탐색트리에 랜덤하게 선택된 $$N$$개의 키를 삽입할 때 트리의 높이는 약 $$1.39logN$$임이 알려져 있기에 평균 수행시간은 $$O(N)$$보다 작다.
+탐색, 삽입, 삭제 연산의 수행시간은 이진탐색트리의 높이에 비례한다. 따라서 최악의 경우에 수행시간은  $$O(N)$$이다. 하지만 빈 이진탐색트리에 랜덤하게 선택된 $$N$$개의 키를 삽입할 때 트리의 높이는 약 $$1.39logN$$임이 알려져 있기에 평균 수행시간은 $$O(N)$$보다 작다.
 
 ## AVL 트리
-AVL 트리는 각각의 노드에 대해 왼쪽 서브트리의 높이와 오른쪽 서브트리의 높이 차이가 1 이하인 이진탐색트리이다. $$N$$개의 노드를 가진 AVL 트리의 높이는 $$O(log N)$$가 되므로 탐색, 삭제, 삽입 연산에 걸리는 시간이 항상 $$O(log N)$$으로 유지된다는 장점이 있다. AVL 트리에서는 높이의 불균형이 발생했을 경우 이를 없애기 위한 회전 연산을 제공한다.
-
-![(1)](/image/2020-04-07-rotation.gif){: .align-left}
+AVL 트리는 각각의 노드에 대해 왼쪽 서브트리의 높이와 오른쪽 서브트리의 높이 차이가 1 이하인 이진탐색트리이다. $$N$$개의 노드를 가진 AVL 트리의 높이는 $$O(log N)$$가 되므로 탐색, 삽입, 삭제 연산에 걸리는 시간이 항상 $$O(log N)$$으로 유지된다는 장점이 있다. AVL 트리에서는 높이의 불균형이 발생했을 경우 이를 없애기 위한 회전 연산을 제공한다.
 
 ```python
 class Node:
@@ -292,7 +290,19 @@ class AVL:
 ```
 
 ### 회전을 통해 높이의 균형 유지하기
-```
+
+![(1)](/images/2020-04-07-rotation.gif){: .align-center}
+
+![(2)](/images/2020-04-07-LL.gif){: .align-center}
+
+![(3)](/images/2020-04-07-RR.gif){: .align-center}
+
+![(4)](/images/2020-04-07-LR.gif){: .align-center}
+
+![(5)](/images/2020-04-07-RL.gif){: .align-center}
+
+
+```python
     # 우회전
     def rotate_right(self, node):
         temp = node.left
@@ -318,14 +328,61 @@ class AVL:
     # 불균형 없애기
     def balance(self, node):
         if self.bf(node) > 1:
-            if self.bf(node.left) < 0:  # 왼쪽 자식의 오른쪽 서브트리가 높은 경우에는 LR 회전해야 함
+            if self.bf(node.left) < 0:  # 왼쪽 자식의 오른쪽 서브트리가 높은 경우 LR 회전하기
                 node.left = self.rotate_left(node.left)
-            node = self.rotate_right(node) # 왼쪽 자식의 왼쪽 서브트리가 높은 경우에는 LL 회전해야 함
+            node = self.rotate_right(node) # 왼쪽 자식의 왼쪽 서브트리가 높은 경우에는 LL 회전하기
         elif self.bf(node) < -1:
-            if self.bf(node.right) > 0:  # 오른쪽 자식의 왼쪽 서브트리가 높은 경우에는 RL 회전해야 함
+            if self.bf(node.right) > 0:  # 오른쪽 자식의 왼쪽 서브트리가 높은 경우에는 RL 회전하기
                 node.right = self.rotate_right(node.right)
-            node = self.rotate_left(node)  # 오른쪽 자식의 오른쪽 서브트리가 높은 경우에는 RR 회전해야 함
+            node = self.rotate_left(node)  # 오른쪽 자식의 오른쪽 서브트리가 높은 경우에는 RR 회전하기
         return node
+```
+
+### 임의의 키값을 가지는 노드 삽입하기
+```python
+
+    # key와 value를 키값과 항목으로 가지는 노드 삽입하기
+    def put(self, key, value):
+        self.root = self.put_item(self.root, key, value)
+        
+    def put_item(self, node, key, value):
+        if node == None:
+            return Node(key, value, 1)
+        if node.key > key:
+            node.left = self.put_item(node.left, key, value)
+        elif node.key < key:
+            node.right = self.put_item(node.right, key, value)
+        else:
+            node.value = value
+            return node
+        node.height = max(self.height(node.left), self.height(node.right)) + 1  # 노드의 높이 갱신하기
+        return self.balance(node)  # 노드의 균형 유지하기
+```
+
+### 임의의 키값을 가지는 노드 삭제하기
+```python
+
+    # 키값이 key인 노드 삭제하기
+    def delete(self, key):
+        self.root = self.del_node(self.root, key)
+    def del_node(self, node, key):
+        if node == None:
+            return None
+        if node.key > key:
+            node.left = self.del_node(node.left, key)
+        elif node.key < key:
+            node.right = self.del_node(node.right, key)
+        else:
+            if node.right == None:
+                return node.left
+            if node.left == None:
+                return node.right
+            target = node
+            node = self.minimum(target.right)
+            node.right = self.del_min(target.right)
+            node.left = target.left
+        node.height = max(self.height(node.left), self.height(node.right)) + 1  # 노드의 높이 갱신하기
+        return self.balance(node)  # 노드의 균형 유지하기
 ```
 
 ## 2-3 트리
