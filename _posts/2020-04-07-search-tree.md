@@ -164,21 +164,19 @@ del_min(root):
         else:  # 키값이 key인 노드를 찾음
             
             if node.right == None:  # 노드의 오른쪽 자식이 없는 경우
-                return node.left  # 노드의 왼쪽 자식이 없다면 None을 반환하고 있다면 노드의 왼쪽 자식을 반환함
+                return node.left  # 노드의 왼쪽 자식을 반환하기
             
             if node.left == None:  # 노드의 오른쪽 자식은 있지만 왼쪽 자식이 없는 경우
-                return node.right  # 노드의 오른쪽 자식을 반환함
+                return node.right  # 노드의 오른쪽 자식을 반환하기
             
             target = node  # 삭제될 노드
             node = self.minimum(target.right)  # target의 중위후속자는 minimum(target.right)임
             
-            # node를 target이 있던 자리에 올리기 위해서는
+            # node를 target이 있던 자리에 올리기 위해...
+            node.right = self.del_min(target.right) # target의 오른쪽 서브트리에서 node를 삭제한 것을 node의 오른쪽 아래에 연결하기
+            node.left = target.left # target의 왼쪽 서브트리를 node의 왼쪽 아래에 연결하기
+
             
-            node.right = self.del_min(target.right)  # target의 오른쪽 서브트리에서 node를 삭제한 것이
-                                                     # node의 오른쪽 아래에 연결되어야 하며
-            
-            node.left = target.left  # target의 왼쪽 서브트리가
-                                     # node의 왼쪽 아래에 연결되어야 함
         return node
 ```
 
