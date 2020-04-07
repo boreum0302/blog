@@ -99,30 +99,30 @@ class BST:
 ```
 
 ```python
-   root     self.del_min(root)
-    50              50          
-   /  \            /  \
-  30  80    ->    30  80
- /  \   \        /  \   \
-10  40  90      10  40  90
- \
- 15
+#    root     self.del_min(root)
+#     50              50          
+#    /  \            /  \
+#   30  80    ->    30  80
+#  /  \   \        /  \   \
+# 10  40  90      10  40  90
+#  \
+#  15
 
-# self.del_min(root)의 수행과정(이하 self.는 표기하지 않았음)
-del_min(root):
-    root.left = del_min(root.left)
-    del_min(root.left):
-        root.left.left = del_min(root.left.left)
-            del_min(root.left.left):
+# self.del_min(root)의 수행과정
+self.del_min(root):
+    root.left = self.del_min(root.left)
+    self.del_min(root.left):
+        root.left.left = self.del_min(root.left.left)
+            self.del_min(root.left.left):
                 return root.left.left.right  # 15
         return root.left  #   30
-                             /  \
-                            15  40
+                          #  /  \
+                          # 15  40
     return root  #     50
-                      /  \
-                     30  80
-                    /  \   \
-                   15  40  90
+                 #    /  \
+                 #   30  80
+                 #  /  \   \
+                 # 15  40  90
 ```
 
 ### 임의의 키값을 가지는 노드 삭제하기 
