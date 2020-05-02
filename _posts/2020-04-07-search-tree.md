@@ -141,8 +141,6 @@ class BST:
 ```
 
 ```
-    # 예시
-    
     #     50      
     #    /  \         
     #   30  80   
@@ -150,7 +148,8 @@ class BST:
     # 10  40  90    
     #  \
     #  15
-
+```
+```
     del_min(root):
         root.left = del_min(root.left)
         del_min(root.left):
@@ -204,8 +203,6 @@ class BST:
 ```
 
 ```
-    # 예시
-    
     #       60
     #      /  \
     #     50  70
@@ -219,7 +216,8 @@ class BST:
     #  25  40
     #   \
     #   30
-
+```
+```
     del_node(root, 20):
         root.left = del_node(root.left, 20)
         del_node(root.left, 20):
@@ -238,7 +236,7 @@ class BST:
                                        #     /
                                        #    35
                                        #   /  \
-                                      #  30  40
+                                       #  30  40
             return root.left  #     50
                               #    /
                               #   25
