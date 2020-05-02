@@ -140,29 +140,31 @@ class BST:
         return node
 ```
 
-```python
-#     50      
-#    /  \         
-#   30  80   
-#  /  \   \    
-# 10  40  90    
-#  \
-#  15
+```
+    # 예시
+    
+    #     50      
+    #    /  \         
+    #   30  80   
+    #  /  \   \    
+    # 10  40  90    
+    #  \
+    #  15
 
-del_min(root):
-    root.left = del_min(root.left)
-    del_min(root.left):
-        root.left.left = del_min(root.left.left)
-        del_min(root.left.left):
-            return root.left.left.right  # 15
-        return root.left  #   30
-                          #  /  \
-                          # 15  40
-    return root  #     50
-                 #    /  \
-                 #   30  80
-                 #  /  \   \
-                 # 15  40  90
+    del_min(root):
+        root.left = del_min(root.left)
+        del_min(root.left):
+            root.left.left = del_min(root.left.left)
+            del_min(root.left.left):
+                return root.left.left.right  # 15
+            return root.left  #   30
+                              #  /  \
+                              # 15  40
+        return root  #     50
+                     #    /  \
+                     #   30  80
+                     #  /  \   \
+                     # 15  40  90
 ```
 
 ### 임의의 키값을 가지는 노드 삭제하기 
@@ -201,62 +203,64 @@ del_min(root):
         return node
 ```
 
-```python
-#       60
-#      /  \
-#     50  70
-#    /
-#   20
-#  /  \
-# 10  45
-#     /
-#    35
-#   /  \
-#  25  40
-#   \
-#   30
+```
+    # 예시
+    
+    #       60
+    #      /  \
+    #     50  70
+    #    /
+    #   20
+    #  /  \
+    # 10  45
+    #     /
+    #    35
+    #   /  \
+    #  25  40
+    #   \
+    #   30
 
-del_node(root, 20):
-    root.left = del_node(root.left, 20)
-    del_node(root.left, 20):
-        root.left.left = del_node(root.left.left, 20)
-        del_node(root.left.left, 20):
-            target = root.left.left  # 20
-            root.left.left = minimum(target.right)  # 25
-            root.left.left.right = del_min(target.right)  #      45
-                                                          #     /
-                                                          #    35
-                                                          #   /  \
-                                                          #  30  40
-            return root.left.left  #   25
-                                   #  /  \
-                                   # 10  40
-                                   #     /
-                                   #    35
-                                   #   /  \
-                                   #  30  40
-        return root.left  #     50
-                          #    /
-                          #   25
-                          #  /  \
-                          # 10  45
-                          #     /
-                          #    35
-                          #   /  \
-                          #  30  40
-    return root  #       60
-                 #      /  \
-                 #     50  70
-                 #    /
-                 #   25
-                 #  /  \
-                 # 10  45
-                 #     /
-                 #    35
-                 #   /  \
-                 #  25  40
-                 #   \
-                 #   30
+    del_node(root, 20):
+        root.left = del_node(root.left, 20)
+        del_node(root.left, 20):
+            root.left.left = del_node(root.left.left, 20)
+            del_node(root.left.left, 20):
+                target = root.left.left  # 20
+                root.left.left = minimum(target.right)  # 25
+                root.left.left.right = del_min(target.right)  #      45
+                                                              #     /
+                                                              #    35
+                                                              #   /  \
+                                                              #  30  40
+                return root.left.left  #   25
+                                       #  /  \
+                                       # 10  40
+                                       #     /
+                                       #    35
+                                       #   /  \
+                                      #  30  40
+            return root.left  #     50
+                              #    /
+                              #   25
+                              #  /  \
+                              # 10  45
+                              #     /
+                              #    35
+                              #   /  \
+                              #  30  40
+        return root  #       60
+                     #      /  \
+                     #     50  70
+                     #    /
+                     #   25
+                     #  /  \
+                     # 10  45
+                     #     /
+                     #    35
+                     #   /  \
+                     #  25  40
+                     #   \
+                     #   30
 ```
 
 ### 연산의 수행시간 계산하기 
