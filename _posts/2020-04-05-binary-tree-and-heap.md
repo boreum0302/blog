@@ -227,5 +227,4 @@ class BHeap:
 ### `heapq`
 파이썬에는 힙을 위한 라이브러리인 `heapq`가 존재한다. 메소드에 대한 자세한 설명은 [**여기**](https://python.flowdas.com/library/heapq.html)에 잘 나와 있다.
 
-## 출처
-파이썬과 함께하는 자료구조의 이해 / 양성봉 지음 / 생능출판사
+**Reference** 파이썬과 함께하는 자료구조의 이해 / 양성봉 지음 / 생능출판사
