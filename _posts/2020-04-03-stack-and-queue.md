@@ -128,7 +128,7 @@ class Queue():
 `import queue`를 먼저 실행한다. `queue` 모듈에는 세 가지 클래스가 정의되어 있다. 
 
 |클래스|내용|
-|---|---|
+|:--|:--|
 |`queue.Queue(maxsize)`|최대 크기가 `maxsize`인 큐 객체 생성하기|
 |`queue.LifoQueue(maxsize)`|최대 크기가 `maxsize`인 스택 객체 생성하기|
 |`queue.PriorityQueue(maxsize)`|최대 크기가 `maxsize`인 우선순위 큐 객체 생성하기|
@@ -140,7 +140,7 @@ class Queue():
 `from collections import deque`를 먼저 실행한다. `deque()`로 데크 객체를 생성한 뒤 수행할 수 있는 메소드에는 아래와 같은 것들이 있다. 
 
 |메소드|내용|
-|---|---|
+|:--|:--|
 |`append(item)`|맨 뒤에 항목 삽입하기|
 |`appendleft(item)`|맨 앞에 항목 삽입하기|
 |`pop()`|맨 뒤의 항목 삭제하고 삭제된 항목 반환하기|
