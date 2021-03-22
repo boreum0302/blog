@@ -4,6 +4,7 @@ categories:
   - Data Structure
 tags:
   - python
+use_math: true
 ---
 
 이진탐색트리(binary search tree)는 정렬된 값들이 리스트에 존재할 때 주어진 값을 빠르게 찾는 방법인 이진탐색(binary tree)을 트리에 접목한 자료구조이다. 단순연결리스트에 비해, 저장된 값을 탐색하거나 임의의 값을 삽입하고 삭제하는 연산을 수행하는 데에 시간이 적게 걸린다는 장점이 있다. 이진탐색트리를 직접 구현해본 다음, 이진탐색트리에 기반한 자료구조인 AVL 트리, 2-3 트리, 좌편향 레드블랙트리(left-leaning red-black tree), B-트리에 대해서도 간단히 정리했다.
