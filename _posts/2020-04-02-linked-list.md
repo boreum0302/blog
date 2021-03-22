@@ -4,6 +4,7 @@ categories:
   - Data Structure
 tags:
   - python
+use_math: true
 ---
 
 가장 기본적인 자료구조인 단순연결리스트와 함께, 이를 살짝 변형한 이중연결리스트, 원형연결리스트를 구현하면서 개념을 정리했다.
