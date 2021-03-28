@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>파이썬 자료구조: 이진트리와 힙 | YONDU UDONTA</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="파이썬 자료구조: 이진트리와 힙" />
+<meta name="author" content="Yondu Udonta" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="트리(tree)는 연결리스트와 달리 노드들이 위아래로 연결된 계층적인 자료구조이다. 특히 각각의 노드 아래에 두 개 이하의 노드가 연결된 이진트리(binary tree)의 활용성이 높다. 예를 들어, 이진트리를 활용하면 \(O(log N)\)이라는 빠른 시간에 가장 높은 우선순위를 가진 항목을 삭제하는 연산과 임의의 우선순위를 가진 항목을 삽입하는 연산을 제공하는 힙(heap)을 구현할 수 있다. 이진트리와 힙을 구현했다." />
+<meta property="og:description" content="트리(tree)는 연결리스트와 달리 노드들이 위아래로 연결된 계층적인 자료구조이다. 특히 각각의 노드 아래에 두 개 이하의 노드가 연결된 이진트리(binary tree)의 활용성이 높다. 예를 들어, 이진트리를 활용하면 \(O(log N)\)이라는 빠른 시간에 가장 높은 우선순위를 가진 항목을 삭제하는 연산과 임의의 우선순위를 가진 항목을 삽입하는 연산을 제공하는 힙(heap)을 구현할 수 있다. 이진트리와 힙을 구현했다." />
+<link rel="canonical" href="http://localhost:4000/data%20structure/binary-tree-and-heap/" />
+<meta property="og:url" content="http://localhost:4000/data%20structure/binary-tree-and-heap/" />
+<meta property="og:site_name" content="YONDU UDONTA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-05T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="파이썬 자료구조: 이진트리와 힙" />
+<meta name="google-site-verification" content="UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/images/yondu-udonta-logo.png"},"name":"Yondu Udonta"},"headline":"파이썬 자료구조: 이진트리와 힙","dateModified":"2020-04-05T00:00:00+09:00","datePublished":"2020-04-05T00:00:00+09:00","url":"http://localhost:4000/data%20structure/binary-tree-and-heap/","author":{"@type":"Person","name":"Yondu Udonta"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/data%20structure/binary-tree-and-heap/"},"description":"트리(tree)는 연결리스트와 달리 노드들이 위아래로 연결된 계층적인 자료구조이다. 특히 각각의 노드 아래에 두 개 이하의 노드가 연결된 이진트리(binary tree)의 활용성이 높다. 예를 들어, 이진트리를 활용하면 \\(O(log N)\\)이라는 빠른 시간에 가장 높은 우선순위를 가진 항목을 삭제하는 연산과 임의의 우선순위를 가진 항목을 삽입하는 연산을 제공하는 힙(heap)을 구현할 수 있다. 이진트리와 힙을 구현했다.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/default.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:200,600|Noto+Sans+KR:200,600|Nanum+Gothic+Coding:400,700">
+  <link rel="alternate" type="application/atom+xml" title="YONDU UDONTA" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+  
+  <head>
+    
+      <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+    
+  </head>  
+
+  <body class="layout--post  파이썬-자료구조-이진트리와-힙">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/posts/">Posts</a></li><li><a href="/categories/">Categories</a></li><li><a href="/tags/">Tags</a></li><li><a href="/photos/">Photos</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+      <a href="/" class="site-logo" rel="home" title="YONDU UDONTA">
+        <img src="/images/yondu-udonta-logo.png" class="site-logo-img animated fadeInDown" alt="YONDU UDONTA">
+      </a>
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">YONDU UDONTA</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">I'm Mary Poppins, Y'all!</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <style>
+  .e-content{
+  text-align:justify}
+</style>
+
+<main id="main" class="main-content" aria-label="Content">
+  <article class="h-entry">
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title p-name">파이썬 자료구조: 이진트리와 힙
+</h1>
+        
+      </header>
+
+      <div class="page-sidebar">
+        <div class="page-author h-card p-author"><img src="/images/yondu-udonta-logo.png" class="author-avatar u-photo" alt="Yondu Udonta"><div class="author-info"><div class="author-name">
+        <em>by</em> <span class="p-name">Yondu Udonta</span>
+      </div><ul class="author-links"><li class="author-link">
+            <a class="u-url" rel="me" href="https://github.com/boreum0302"><i class="fab fa-github-square fa-lg" title="GitHub"></i></a>
+          </li><li class="author-link">
+            <a class="u-url" rel="me" href="mailto:bureom0302@gmail.com"><i class="fas fa-envelope-square fa-lg" title="e-mail"></i></a>
+          </li></ul>
+    <time class="page-date dt-published" datetime="2020-04-05T00:00:00+09:00"><a class="u-url" href="">April 5, 2020</a>
+</time>
+
+  </div>
+</div>
+
+        
+  <h3 class="page-taxonomies-title">Categories</h3>
+  
+  <ul class="page-taxonomies"><li class="page-taxonomy"><a class="p-category" href="/categories/#data-structure" title="Pages filed under Data Structure">Data Structure</a></li>
+  </ul>
+
+
+        
+  <h3 class="page-taxonomies-title">Tags</h3>
+  
+  <ul class="page-taxonomies"><li class="page-taxonomy"><a href="/tags/#python" title="Pages tagged python" rel="tag">python</a></li>
+  </ul>
+
+
+      </div>
+
+      <div class="page-content">
+        <div class="e-content">
+          <p>트리(tree)는 연결리스트와 달리 노드들이 위아래로 연결된 계층적인 자료구조이다. 특히 각각의 노드 아래에 두 개 이하의 노드가 연결된 이진트리(binary tree)의 활용성이 높다. 예를 들어, 이진트리를 활용하면 \(O(log N)\)이라는 빠른 시간에 가장 높은 우선순위를 가진 항목을 삭제하는 연산과 임의의 우선순위를 가진 항목을 삽입하는 연산을 제공하는 힙(heap)을 구현할 수 있다. 이진트리와 힙을 구현했다.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#트리tree" id="markdown-toc-트리tree">트리(tree)</a></li>
+  <li><a href="#이진트리binary-tree" id="markdown-toc-이진트리binary-tree">이진트리(binary tree)</a>    <ul>
+      <li><a href="#이진트리-객체-생성하기" id="markdown-toc-이진트리-객체-생성하기">이진트리 객체 생성하기</a></li>
+      <li><a href="#이진트리-순회하기" id="markdown-toc-이진트리-순회하기">이진트리 순회하기</a></li>
+      <li><a href="#이진트리-높이-계산하기" id="markdown-toc-이진트리-높이-계산하기">이진트리 높이 계산하기</a></li>
+      <li><a href="#이진트리-복사하기" id="markdown-toc-이진트리-복사하기">이진트리 복사하기</a></li>
+      <li><a href="#두-이진트리가-동일한지-검사하기" id="markdown-toc-두-이진트리가-동일한지-검사하기">두 이진트리가 동일한지 검사하기</a></li>
+    </ul>
+  </li>
+  <li><a href="#힙heap" id="markdown-toc-힙heap">힙(heap)</a>    <ul>
+      <li><a href="#힙-객체-생성하기" id="markdown-toc-힙-객체-생성하기">힙 객체 생성하기</a></li>
+      <li><a href="#힙에-임의의-우선순위를-가지는-항목-삽입하기" id="markdown-toc-힙에-임의의-우선순위를-가지는-항목-삽입하기">힙에 임의의 우선순위를 가지는 항목 삽입하기</a></li>
+      <li><a href="#힙에서-우선순위가-가장-작은-항목-삭제하기" id="markdown-toc-힙에서-우선순위가-가장-작은-항목-삭제하기">힙에서 우선순위가 가장 작은 항목 삭제하기</a></li>
+      <li><a href="#상향식-힙-만들기bottom-up-heap-construction" id="markdown-toc-상향식-힙-만들기bottom-up-heap-construction">상향식 힙 만들기(bottom-up heap construction)</a></li>
+      <li><a href="#힙-연산의-수행시간-계산하기" id="markdown-toc-힙-연산의-수행시간-계산하기">힙 연산의 수행시간 계산하기</a></li>
+      <li><a href="#heapq" id="markdown-toc-heapq"><code class="language-plaintext highlighter-rouge">heapq</code></a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="트리tree">트리(tree)</h2>
+<p>일반적으로 트리의 생김새를 묘사하기 위해 아래와 같은 용어들을 사용한다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">용어</th>
+      <th style="text-align: left">정의</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">루트(root)</td>
+      <td style="text-align: left">트리의 최상위에 있는 노드</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">자식(child)</td>
+      <td style="text-align: left">특정 노드 아래에 연결된 노드</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">차수(degree)</td>
+      <td style="text-align: left">특정 노드의 자식 수</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">부모(parent)</td>
+      <td style="text-align: left">특정 노드 위에 연결된 노드</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">이파리(leaf)</td>
+      <td style="text-align: left">자식이 없는 노드</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">내부(internal) 노드</td>
+      <td style="text-align: left">이파리가 아닌 노드</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">형제(sibling)</td>
+      <td style="text-align: left">부모가 같은 노드</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">조상(ancestor)</td>
+      <td style="text-align: left">특정 노드에서 출발하여 루트까지 올라갈 때 들리는 모든 노드들의 집합</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">후손(descendant)</td>
+      <td style="text-align: left">특정 노드 아래에 매달린 모든 노드들의 집합</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">서브트리(subtree)</td>
+      <td style="text-align: left">특정 노드 자신과 후손으로 구성된 트리</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">레벨(level)</td>
+      <td style="text-align: left">루트의 레벨은 1이고, 아래로 내려가며 레벨이 1씩 증가함</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">높이(height)</td>
+      <td style="text-align: left">트리의 최대 레벨</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">키(key)</td>
+      <td style="text-align: left">노드에 저장된 값으로 탐색에 사용됨</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="이진트리binary-tree">이진트리(binary tree)</h2>
+<p>이진트리(binary tree)는 각각의 노드의 자식이 두 개 이하인 트리이다. 이진트리 중 완전이진트리(complete binary tree)와 포화이진트리(perfect binary tree)는 특별한 형태를 가진다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">용어</th>
+      <th style="text-align: left">정의</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">완전이진트리</td>
+      <td style="text-align: left">마지막 레벨을 제외하면 각각의 레벨이 노드로 완전히 채워져 있고, 마지막 레벨은 노드가 왼쪽에서부터 차곡차곡 채워진 트리</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">포화이진트리</td>
+      <td style="text-align: left">완전이진트리의 일종으로, 이파리의 레벨이 전부 동일하며 각각의 내부노드의 차수가 2인 트리</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="이진트리-객체-생성하기">이진트리 객체 생성하기</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>  <span class="c1"># 왼쪽 아래에 달린 자식
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>  <span class="c1"># 오른쪽 아래에 달린 자식
+</span>
+<span class="k">class</span> <span class="nc">BinaryTree</span><span class="p">:</span>
+        
+    <span class="k">class</span> <span class="nc">EmptyError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h3 id="이진트리-순회하기">이진트리 순회하기</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 전위순회(Node -&gt; Left -&gt; Right)
+</span>    <span class="k">def</span> <span class="nf">preorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>  
+        <span class="k">if</span> <span class="n">node</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">item</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+    
+    <span class="c1"># 후위순회(Left -&gt; Right -&gt; Node)
+</span>    <span class="k">def</span> <span class="nf">postorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">node</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">postorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">postorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">item</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+    
+    <span class="c1"># 중위순회(Left -&gt; Node -&gt; Right)
+</span>    <span class="k">def</span> <span class="nf">inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">node</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">item</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+    
+    <span class="c1"># 레벨순회(최상위 레벨부터 시작하여 각 레벨마다 왼쪽에서 오른쪽으로 노드를 방문함)      
+</span>    <span class="k">def</span> <span class="nf">levelorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>  
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">new_node</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">new_node</span><span class="p">.</span><span class="n">item</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">new_node</span><span class="p">.</span><span class="n">left</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">new_node</span><span class="p">.</span><span class="n">right</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="이진트리-높이-계산하기">이진트리 높이 계산하기</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h3 id="이진트리-복사하기">이진트리 복사하기</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>  <span class="c1"># 연습문제 4.27
+</span>        
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        
+        <span class="n">nodes</span><span class="p">,</span> <span class="n">coppied_nodes</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">nodes</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">coppied_nodes</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">item</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)):</span>  <span class="c1"># O(N^2)
+</span>            <span class="n">index_left</span><span class="p">,</span> <span class="n">index_right</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">left</span> <span class="o">==</span> <span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                    <span class="n">index_left</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">right</span> <span class="o">==</span> <span class="n">nodes</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                    <span class="n">index_right</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">if</span> <span class="n">index_left</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">coppied_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">left</span> <span class="o">=</span> <span class="n">coppied_nodes</span><span class="p">[</span><span class="n">index_left</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">index_right</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">coppied_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">right</span> <span class="o">=</span> <span class="n">coppied_nodes</span><span class="p">[</span><span class="n">index_right</span><span class="p">]</span>
+        
+        <span class="n">coppied_tree</span> <span class="o">=</span> <span class="n">BinaryTree</span><span class="p">()</span>
+        <span class="n">coppied_tree</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">coppied_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">coppied_tree</span>
+</code></pre></div></div>
+
+<p>우선 비어 있는 리스트인 <code class="language-plaintext highlighter-rouge">nodes</code>와 <code class="language-plaintext highlighter-rouge">coppied_nodes</code>를 준비한다. <code class="language-plaintext highlighter-rouge">while</code> 절에서 레벨순회를 하며 <code class="language-plaintext highlighter-rouge">nodes</code>에는 주어진 노드를 그대로 <code class="language-plaintext highlighter-rouge">append</code>하고, <code class="language-plaintext highlighter-rouge">coppied_nodes</code>에는 <code class="language-plaintext highlighter-rouge">item</code>은 동일하지만 <code class="language-plaintext highlighter-rouge">right</code>와 <code class="language-plaintext highlighter-rouge">left</code>는 <code class="language-plaintext highlighter-rouge">None</code>인 노드를 새롭게 만들어서 <code class="language-plaintext highlighter-rouge">append</code>한다. 이제 <code class="language-plaintext highlighter-rouge">for</code> 절에서 <code class="language-plaintext highlighter-rouge">coppied_nodes</code>에 있는 노드들을 본래 트리에서처럼 연결해준다. 마지막으로 <code class="language-plaintext highlighter-rouge">coppied_tree</code>라는 <code class="language-plaintext highlighter-rouge">BinaryTree()</code> 객체를 생성하고, <code class="language-plaintext highlighter-rouge">root</code>를 <code class="language-plaintext highlighter-rouge">coppied_nodes[0]</code>으로 설정한 뒤 반환한다.</p>
+
+<h3 id="두-이진트리가-동일한지-검사하기">두 이진트리가 동일한지 검사하기</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">is_same</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">my_root</span><span class="p">,</span> <span class="n">other_root</span><span class="p">):</span>  <span class="c1"># 연습문제 4.18
+</span>        <span class="k">if</span> <span class="n">my_root</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">other_root</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">my_root</span> <span class="o">==</span> <span class="n">other_root</span>
+        <span class="k">if</span> <span class="n">my_root</span><span class="p">.</span><span class="n">item</span> <span class="o">!=</span> <span class="n">other_root</span><span class="p">.</span><span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">is_same</span><span class="p">(</span><span class="n">my_root</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">other_root</span><span class="p">.</span><span class="n">left</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">is_same</span><span class="p">(</span><span class="n">my_root</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">other_root</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="힙heap">힙(heap)</h2>
+<p>힙(heap)은 부모의 우선순위가 항상 자식의 우선순위보다 높은 완전이진트리이다. 이때 각각의 노드의 우선순위는 키값이 결정한다. 이진힙에서 키값이 작을수록 우선순위가 높은 경우를 최소힙(minimum heap)이라 하고, 키값이 클수록 우선순위가 높은 경우를 최대힙(maximum heap)이라 한다. 이하 ‘힙’은 ‘최소힙’을 의미한다.</p>
+
+<h3 id="힙-객체-생성하기">힙 객체 생성하기</h3>
+<p>힙을 구현할 때는 리스트를 사용한다. 트리에서 레벨순회를 하며 <code class="language-plaintext highlighter-rouge">a[1]</code>부터 키값을 저장하기 시작하면, <code class="language-plaintext highlighter-rouge">a[i]</code>의 왼쪽 자식과 오른쪽 자식은 각각 <code class="language-plaintext highlighter-rouge">a[2*i]</code>와 <code class="language-plaintext highlighter-rouge">a[2*i + 1]</code>에 들어가고 <code class="language-plaintext highlighter-rouge">a[j]</code>의 부모는 <code class="language-plaintext highlighter-rouge">a[j//2]</code>에 들어게 된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BHeap</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>  <span class="c1"># 리스트
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># 항목의 개수
+</span></code></pre></div></div>
+
+<h3 id="힙에-임의의-우선순위를-가지는-항목-삽입하기">힙에 임의의 우선순위를 가지는 항목 삽입하기</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="c1"># (키값, 항목) 형식의 튜플인 `key_value`를 힙에 삽입하기
+</span>   <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">N</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">upheap</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">N</span><span class="p">)</span>  <span class="c1"># 힙의 마지막 항목부터 출발하여 올라가면서 힙 속성 회복하기
+</span>        
+   <span class="c1"># j번째 항목부터 올라가면서 힙 속성 회복하기
+</span>   <span class="k">def</span> <span class="nf">upheap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="k">while</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">//</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># 부모의 키값이 자식의 키값보다 큰 경우에만
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">//</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>  <span class="c1"># 부모와 자식을 맞바꾸기
+</span>            <span class="n">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">//</span><span class="mi">2</span>  <span class="c1"># 한 층 올라가기
+</span></code></pre></div></div>
+
+<h3 id="힙에서-우선순위가-가장-작은-항목-삭제하기">힙에서 우선순위가 가장 작은 항목 삭제하기</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 힙에서 키값이 가장 작은 항목 삭제하고 삭제된 항목 반환하기
+</span>    <span class="k">def</span> <span class="nf">delete_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmptyError</span><span class="p">(</span><span class="s">'Underflow'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">minimum</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># 첫 항목과 마지막 항목을 맞바꾸기
+</span>            <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># 맨 뒤를 삭제하기
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">N</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">downheap</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 힙의 첫 항목부터 출발하여 내려가면서 힙 속성 회복하기
+</span>            <span class="k">return</span> <span class="n">minimum</span>
+    
+    <span class="c1"># i번째 항목부터 내려가면서 힙 속성 회복하기
+</span>    <span class="k">def</span> <span class="nf">downheap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">while</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="p">.</span><span class="n">N</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span>  <span class="c1"># a[i]의 자식은 a[2*i]와 a[2*i + 1]에 존재함
+</span>            <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">N</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># 왼쪽 자식의 키값이 작다면 k = 2*i이고 오른쪽 자식의 키값이 작다면 k = 2*i + 1임
+</span>            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>  
+                <span class="k">break</span>  <span class="c1"># 부모의 키값이 두 자식의 키값보다 작다면 힙 속성을 만족하는 것이니까 반복문 나가기
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># 힙 속성을 만족시키기 위해 두 자식 중 키값이 작은 것을 부모와 맞바꾸기
+</span>            <span class="n">i</span> <span class="o">=</span> <span class="n">k</span>  <span class="c1"># 한 층 내려가기
+</span></code></pre></div></div>
+
+<h3 id="상향식-힙-만들기bottom-up-heap-construction">상향식 힙 만들기(bottom-up heap construction)</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># self.a를 힙 속성을 만족하게끔 재배열함
+</span>    <span class="k">def</span> <span class="nf">create_heap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 마지막 직전 층에서부터 downheap을 수행하며 올라감
+</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">N</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">downheap</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="힙-연산의-수행시간-계산하기">힙 연산의 수행시간 계산하기</h3>
+<p>힙에서 항목을 삭제하거나 삽입하는 연산은 최악의 경우에 힙의 높이에 비례하며, 힙을 만들 때는 항상 힙의 높이에 비례한다. 힙의 높이는 \(log N\)으로 근사할 수 있으므로, 각 힙 연산에 걸리는 시간은 \(O(log N)\)이다.</p>
+
+<h3 id="heapq"><code class="language-plaintext highlighter-rouge">heapq</code></h3>
+<p>파이썬에는 힙을 위한 라이브러리인 <code class="language-plaintext highlighter-rouge">heapq</code>가 존재한다. 메소드에 대한 자세한 설명은 <a href="https://python.flowdas.com/library/heapq.html"><strong>여기</strong></a>에 잘 나와 있다.</p>
+
+<p><strong>Reference</strong> 파이썬과 함께하는 자료구조의 이해 / 양성봉 지음 / 생능출판사</p>
+
+        </div>
+
+        
+          <div class="page-share">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fbinary-tree-and-heap%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--facebook btn--small"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i> <span>Share</span></a>
+  <a href="https://twitter.com/intent/tweet?text=%ED%8C%8C%EC%9D%B4%EC%8D%AC+%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%3A+%EC%9D%B4%EC%A7%84%ED%8A%B8%EB%A6%AC%EC%99%80+%ED%9E%99%20http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fbinary-tree-and-heap%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fbinary-tree-and-heap%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=%ED%8C%8C%EC%9D%B4%EC%8D%AC+%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%3A+%EC%9D%B4%EC%A7%84%ED%8A%B8%EB%A6%AC%EC%99%80+%ED%9E%99&url=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fbinary-tree-and-heap%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+        
+
+        
+
+        <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/data%20structure/stack-and-queue/">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> 파이썬 자료구조: 스택과 큐
+
+      </span>
+    </a>
+  
+
+  
+    <a class="page-next" href="/data%20structure/search-tree/">
+      <h4 class="page-pagination-label">Next</h4>
+      <span class="page-pagination-title">
+        파이썬 자료구조: 탐색트리
+ <i class="fas fa-arrow-right"></i>
+      </span>
+    </a>
+  
+</nav>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://github.com/boreum0302"><i class="fab fa-github-square fa-2x" title="GitHub"></i></a><a class="social-icon" href="mailto:bureom0302@gmail.com"><i class="fas fa-envelope-square fa-2x" title="e-mail"></i></a></div><div class="copyright">
+    
+      <p>Powered by <a href="https://jekyllrb.com/"><strong>Jekyll</strong></a> and <a href="https://github.com/mmistakes/so-simple-theme"><strong>So Simple Theme</strong></a>.</p>
+
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+
+<script>
+// http://docs.mathjax.org/en/latest/upgrading/v2.html
+MathJax = {
+  tex: {
+      tags: "ams"    // eq numbering options: none, ams, all
+  },
+  options: {
+    renderActions: {
+      // for mathjax 3, handle <script "math/tex"> blocks inserted by kramdown
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+        }
+      }, '']
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  </body>
+
+</html>

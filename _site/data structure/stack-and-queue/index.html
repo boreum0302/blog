@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>파이썬 자료구조: 스택과 큐 | YONDU UDONTA</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="파이썬 자료구조: 스택과 큐" />
+<meta name="author" content="Yondu Udonta" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="단순연결리스트를 이용하여 맨 앞에서만 항목을 삭제하거나 삽입하는 자료구조인 스택(stack)과 맨 앞에서는 항목을 삭제하기만 하고 맨 뒤에서는 항목을 삽입하기만 하는 자료구조인 큐(queue)를 구현했다. 스택에서는 마지막에 들어온 항목이 가장 먼저 나가므로 후입선출(Last In First Out, LIFO), 큐에서는 먼저 들어온 항목일수록 먼저 나가므로 선입선출(First In First Out, FIFO) 규칙이 적용된다. 데크(deque)은 맨 뒤와 맨 앞에서 삭제와 삽입이 둘 다 가능한 자료구조이다. 파이썬에는 스택과 큐 객체를 생성할 수 있는 queue 모듈과 데크 객체를 생성할 수 있는 deque 모듈이 존재한다." />
+<meta property="og:description" content="단순연결리스트를 이용하여 맨 앞에서만 항목을 삭제하거나 삽입하는 자료구조인 스택(stack)과 맨 앞에서는 항목을 삭제하기만 하고 맨 뒤에서는 항목을 삽입하기만 하는 자료구조인 큐(queue)를 구현했다. 스택에서는 마지막에 들어온 항목이 가장 먼저 나가므로 후입선출(Last In First Out, LIFO), 큐에서는 먼저 들어온 항목일수록 먼저 나가므로 선입선출(First In First Out, FIFO) 규칙이 적용된다. 데크(deque)은 맨 뒤와 맨 앞에서 삭제와 삽입이 둘 다 가능한 자료구조이다. 파이썬에는 스택과 큐 객체를 생성할 수 있는 queue 모듈과 데크 객체를 생성할 수 있는 deque 모듈이 존재한다." />
+<link rel="canonical" href="http://localhost:4000/data%20structure/stack-and-queue/" />
+<meta property="og:url" content="http://localhost:4000/data%20structure/stack-and-queue/" />
+<meta property="og:site_name" content="YONDU UDONTA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-03T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="파이썬 자료구조: 스택과 큐" />
+<meta name="google-site-verification" content="UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/images/yondu-udonta-logo.png"},"name":"Yondu Udonta"},"headline":"파이썬 자료구조: 스택과 큐","dateModified":"2020-04-03T00:00:00+09:00","datePublished":"2020-04-03T00:00:00+09:00","url":"http://localhost:4000/data%20structure/stack-and-queue/","author":{"@type":"Person","name":"Yondu Udonta"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/data%20structure/stack-and-queue/"},"description":"단순연결리스트를 이용하여 맨 앞에서만 항목을 삭제하거나 삽입하는 자료구조인 스택(stack)과 맨 앞에서는 항목을 삭제하기만 하고 맨 뒤에서는 항목을 삽입하기만 하는 자료구조인 큐(queue)를 구현했다. 스택에서는 마지막에 들어온 항목이 가장 먼저 나가므로 후입선출(Last In First Out, LIFO), 큐에서는 먼저 들어온 항목일수록 먼저 나가므로 선입선출(First In First Out, FIFO) 규칙이 적용된다. 데크(deque)은 맨 뒤와 맨 앞에서 삭제와 삽입이 둘 다 가능한 자료구조이다. 파이썬에는 스택과 큐 객체를 생성할 수 있는 queue 모듈과 데크 객체를 생성할 수 있는 deque 모듈이 존재한다.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/default.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:200,600|Noto+Sans+KR:200,600|Nanum+Gothic+Coding:400,700">
+  <link rel="alternate" type="application/atom+xml" title="YONDU UDONTA" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+  
+  <head>
+    
+      <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+    
+  </head>  
+
+  <body class="layout--post  파이썬-자료구조-스택과-큐">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/posts/">Posts</a></li><li><a href="/categories/">Categories</a></li><li><a href="/tags/">Tags</a></li><li><a href="/photos/">Photos</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+      <a href="/" class="site-logo" rel="home" title="YONDU UDONTA">
+        <img src="/images/yondu-udonta-logo.png" class="site-logo-img animated fadeInDown" alt="YONDU UDONTA">
+      </a>
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">YONDU UDONTA</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">I'm Mary Poppins, Y'all!</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <style>
+  .e-content{
+  text-align:justify}
+</style>
+
+<main id="main" class="main-content" aria-label="Content">
+  <article class="h-entry">
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title p-name">파이썬 자료구조: 스택과 큐
+</h1>
+        
+      </header>
+
+      <div class="page-sidebar">
+        <div class="page-author h-card p-author"><img src="/images/yondu-udonta-logo.png" class="author-avatar u-photo" alt="Yondu Udonta"><div class="author-info"><div class="author-name">
+        <em>by</em> <span class="p-name">Yondu Udonta</span>
+      </div><ul class="author-links"><li class="author-link">
+            <a class="u-url" rel="me" href="https://github.com/boreum0302"><i class="fab fa-github-square fa-lg" title="GitHub"></i></a>
+          </li><li class="author-link">
+            <a class="u-url" rel="me" href="mailto:bureom0302@gmail.com"><i class="fas fa-envelope-square fa-lg" title="e-mail"></i></a>
+          </li></ul>
+    <time class="page-date dt-published" datetime="2020-04-03T00:00:00+09:00"><a class="u-url" href="">April 3, 2020</a>
+</time>
+
+  </div>
+</div>
+
+        
+  <h3 class="page-taxonomies-title">Categories</h3>
+  
+  <ul class="page-taxonomies"><li class="page-taxonomy"><a class="p-category" href="/categories/#data-structure" title="Pages filed under Data Structure">Data Structure</a></li>
+  </ul>
+
+
+        
+  <h3 class="page-taxonomies-title">Tags</h3>
+  
+  <ul class="page-taxonomies"><li class="page-taxonomy"><a href="/tags/#python" title="Pages tagged python" rel="tag">python</a></li>
+  </ul>
+
+
+      </div>
+
+      <div class="page-content">
+        <div class="e-content">
+          <p>단순연결리스트를 이용하여 맨 앞에서만 항목을 삭제하거나 삽입하는 자료구조인 스택(stack)과 맨 앞에서는 항목을 삭제하기만 하고 맨 뒤에서는 항목을 삽입하기만 하는 자료구조인 큐(queue)를 구현했다. 스택에서는 마지막에 들어온 항목이 가장 먼저 나가므로 후입선출(Last In First Out, LIFO), 큐에서는 먼저 들어온 항목일수록 먼저 나가므로 선입선출(First In First Out, FIFO) 규칙이 적용된다. 데크(deque)은 맨 뒤와 맨 앞에서 삭제와 삽입이 둘 다 가능한 자료구조이다. 파이썬에는 스택과 큐 객체를 생성할 수 있는 <code class="language-plaintext highlighter-rouge">queue</code> 모듈과 데크 객체를 생성할 수 있는 <code class="language-plaintext highlighter-rouge">deque</code> 모듈이 존재한다.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#스택stack" id="markdown-toc-스택stack">스택(stack)</a></li>
+  <li><a href="#큐queue" id="markdown-toc-큐queue">큐(queue)</a></li>
+  <li><a href="#데크deque" id="markdown-toc-데크deque">데크(deque)</a></li>
+  <li><a href="#queue" id="markdown-toc-queue"><code class="language-plaintext highlighter-rouge">queue</code></a></li>
+  <li><a href="#deque" id="markdown-toc-deque"><code class="language-plaintext highlighter-rouge">deque</code></a></li>
+</ul>
+
+<h2 id="스택stack">스택(stack)</h2>
+<p><code class="language-plaintext highlighter-rouge">pop()</code>은 맨 앞의 노드를 삭제한 뒤 삭제된 노드의 항목을 반환하는 메소드이고, <code class="language-plaintext highlighter-rouge">push()</code>는 새 노드를 맨 앞에 삽입하는 메소드이다. 각각의 연산에 걸리는 시간은 \(O(1)\)이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Stack</span><span class="p">():</span>
+    
+    <span class="k">class</span> <span class="nc">EmptyError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">link</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span>
+    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
+    
+    <span class="c1"># item을 항목으로 가지는 노드 맨 앞에 삽입하기
+</span>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>  
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">is_empty</span><span class="p">():</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Node</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Node</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="c1"># 맨 앞의 노드 삭제하고 항목 반환하기
+</span>    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">is_empty</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">EmptyError</span><span class="p">(</span><span class="s">'Underflow'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">item</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="nb">next</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">temp</span>
+   
+   <span class="c1"># 전체 항목 출력하기
+</span>    <span class="k">def</span> <span class="nf">print_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+        <span class="k">print</span><span class="p">(</span><span class="s">'top -&gt; '</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        <span class="k">while</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">.</span><span class="nb">next</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">item</span><span class="p">,</span> <span class="s">'-&gt; '</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="nb">next</span>
+</code></pre></div></div>
+
+<h2 id="큐queue">큐(queue)</h2>
+<p>맨 뒤에다 항목을 삽입해야 하기 때문에 큐 객체는 맨 뒤 노드를 가리키는 <code class="language-plaintext highlighter-rouge">tail</code>이라는 속성을 가진다. 메소드에는 맨 앞의 노드를 삭제하고 삭제된 노드의 항목을 반환하는 <code class="language-plaintext highlighter-rouge">remove()</code>와, 맨 뒤에 <code class="language-plaintext highlighter-rouge">item</code>을 항목으로 가지는 노드를 삽입하는 <code class="language-plaintext highlighter-rouge">add(item)</code>이 존재한다. 각각에 걸리는 시간은 \(O(1)\)이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Queue</span><span class="p">():</span>
+    
+    <span class="k">class</span> <span class="nc">EmptyError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">link</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span>
+    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>        
+        
+    <span class="c1"># item을 항목으로 가지는 노드 맨 뒤에 삽입하기    
+</span>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">new_node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Node</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">is_empty</span><span class="p">():</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">new_node</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">new_node</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">new_node</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">new_node</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="c1"># 맨 앞의 노드 삭제하고 항목 반환하기
+</span>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">is_empty</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">EmptyError</span><span class="p">(</span><span class="s">'Underflow'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">item</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="nb">next</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">tail</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">return</span> <span class="n">temp</span>
+            
+    <span class="c1"># 전체 항목 출력하기    
+</span>    <span class="k">def</span> <span class="nf">print_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+        <span class="k">print</span><span class="p">(</span><span class="s">'head -&gt; '</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        <span class="k">while</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">.</span><span class="nb">next</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">item</span><span class="p">,</span> <span class="s">'-&gt; '</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">item</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="nb">next</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">' &lt;- tail'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="데크deque">데크(deque)</h2>
+<p>스택과 큐를 혼합한 형태이므로 이중연결리스트로 구현하는 것이 적절하다.</p>
+
+<h2 id="queue"><code class="language-plaintext highlighter-rouge">queue</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">import queue</code>를 먼저 실행한다. <code class="language-plaintext highlighter-rouge">queue</code> 모듈에는 세 가지 클래스가 정의되어 있다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">클래스</th>
+      <th style="text-align: left">내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">queue.Queue(maxsize)</code></td>
+      <td style="text-align: left">최대 크기가 <code class="language-plaintext highlighter-rouge">maxsize</code>인 큐 객체 생성하기</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">queue.LifoQueue(maxsize)</code></td>
+      <td style="text-align: left">최대 크기가 <code class="language-plaintext highlighter-rouge">maxsize</code>인 스택 객체 생성하기</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">queue.PriorityQueue(maxsize)</code></td>
+      <td style="text-align: left">최대 크기가 <code class="language-plaintext highlighter-rouge">maxsize</code>인 우선순위 큐 객체 생성하기</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>각각의 클래스에 대한 메소드의 종류와 기능은 <a href="https://docs.python.org/ko/3/library/asyncio-queue.html"><strong>여기</strong></a>에 잘 설명되어 있다.</p>
+
+<h2 id="deque"><code class="language-plaintext highlighter-rouge">deque</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">from collections import deque</code>를 먼저 실행한다. <code class="language-plaintext highlighter-rouge">deque()</code>로 데크 객체를 생성한 뒤 수행할 수 있는 메소드에는 아래와 같은 것들이 있다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">메소드</th>
+      <th style="text-align: left">내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">append(item)</code></td>
+      <td style="text-align: left">맨 뒤에 항목 삽입하기</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">appendleft(item)</code></td>
+      <td style="text-align: left">맨 앞에 항목 삽입하기</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">pop()</code></td>
+      <td style="text-align: left">맨 뒤의 항목 삭제하고 삭제된 항목 반환하기</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">popleft()</code></td>
+      <td style="text-align: left">맨 앞의 항목 삭제하고 삭제된 항목 반환하기</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Reference</strong> 파이썬과 함께하는 자료구조의 이해 / 양성봉 지음 / 생능출판사</p>
+
+        </div>
+
+        
+          <div class="page-share">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fstack-and-queue%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--facebook btn--small"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i> <span>Share</span></a>
+  <a href="https://twitter.com/intent/tweet?text=%ED%8C%8C%EC%9D%B4%EC%8D%AC+%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%3A+%EC%8A%A4%ED%83%9D%EA%B3%BC+%ED%81%90%20http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fstack-and-queue%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fstack-and-queue%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=%ED%8C%8C%EC%9D%B4%EC%8D%AC+%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%3A+%EC%8A%A4%ED%83%9D%EA%B3%BC+%ED%81%90&url=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fstack-and-queue%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+        
+
+        
+
+        <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/data%20structure/linked-list/">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> 파이썬 자료구조: 연결리스트
+
+      </span>
+    </a>
+  
+
+  
+    <a class="page-next" href="/data%20structure/binary-tree-and-heap/">
+      <h4 class="page-pagination-label">Next</h4>
+      <span class="page-pagination-title">
+        파이썬 자료구조: 이진트리와 힙
+ <i class="fas fa-arrow-right"></i>
+      </span>
+    </a>
+  
+</nav>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://github.com/boreum0302"><i class="fab fa-github-square fa-2x" title="GitHub"></i></a><a class="social-icon" href="mailto:bureom0302@gmail.com"><i class="fas fa-envelope-square fa-2x" title="e-mail"></i></a></div><div class="copyright">
+    
+      <p>Powered by <a href="https://jekyllrb.com/"><strong>Jekyll</strong></a> and <a href="https://github.com/mmistakes/so-simple-theme"><strong>So Simple Theme</strong></a>.</p>
+
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+
+<script>
+// http://docs.mathjax.org/en/latest/upgrading/v2.html
+MathJax = {
+  tex: {
+      tags: "ams"    // eq numbering options: none, ams, all
+  },
+  options: {
+    renderActions: {
+      // for mathjax 3, handle <script "math/tex"> blocks inserted by kramdown
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+        }
+      }, '']
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  </body>
+
+</html>

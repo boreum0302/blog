@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>파이썬 자료구조: 탐색트리 | YONDU UDONTA</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="파이썬 자료구조: 탐색트리" />
+<meta name="author" content="Yondu Udonta" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="이진탐색트리(binary search tree)는 정렬된 값들이 리스트에 존재할 때 주어진 값을 빠르게 찾는 방법인 이진탐색(binary tree)을 트리에 접목한 자료구조이다. 단순연결리스트에 비해, 저장된 값을 탐색하거나 임의의 값을 삽입하고 삭제하는 연산을 수행하는 데에 시간이 적게 걸린다는 장점이 있다. 이진탐색트리를 직접 구현해본 다음, 이진탐색트리에 기반한 자료구조인 AVL 트리, 2-3 트리, 좌편향 레드블랙트리(left-leaning red-black tree), B-트리에 대해서도 간단히 정리했다." />
+<meta property="og:description" content="이진탐색트리(binary search tree)는 정렬된 값들이 리스트에 존재할 때 주어진 값을 빠르게 찾는 방법인 이진탐색(binary tree)을 트리에 접목한 자료구조이다. 단순연결리스트에 비해, 저장된 값을 탐색하거나 임의의 값을 삽입하고 삭제하는 연산을 수행하는 데에 시간이 적게 걸린다는 장점이 있다. 이진탐색트리를 직접 구현해본 다음, 이진탐색트리에 기반한 자료구조인 AVL 트리, 2-3 트리, 좌편향 레드블랙트리(left-leaning red-black tree), B-트리에 대해서도 간단히 정리했다." />
+<link rel="canonical" href="http://localhost:4000/data%20structure/search-tree/" />
+<meta property="og:url" content="http://localhost:4000/data%20structure/search-tree/" />
+<meta property="og:site_name" content="YONDU UDONTA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-07T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="파이썬 자료구조: 탐색트리" />
+<meta name="google-site-verification" content="UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/images/yondu-udonta-logo.png"},"name":"Yondu Udonta"},"headline":"파이썬 자료구조: 탐색트리","dateModified":"2020-04-07T00:00:00+09:00","datePublished":"2020-04-07T00:00:00+09:00","url":"http://localhost:4000/data%20structure/search-tree/","author":{"@type":"Person","name":"Yondu Udonta"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/data%20structure/search-tree/"},"description":"이진탐색트리(binary search tree)는 정렬된 값들이 리스트에 존재할 때 주어진 값을 빠르게 찾는 방법인 이진탐색(binary tree)을 트리에 접목한 자료구조이다. 단순연결리스트에 비해, 저장된 값을 탐색하거나 임의의 값을 삽입하고 삭제하는 연산을 수행하는 데에 시간이 적게 걸린다는 장점이 있다. 이진탐색트리를 직접 구현해본 다음, 이진탐색트리에 기반한 자료구조인 AVL 트리, 2-3 트리, 좌편향 레드블랙트리(left-leaning red-black tree), B-트리에 대해서도 간단히 정리했다.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/default.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:200,600|Noto+Sans+KR:200,600|Nanum+Gothic+Coding:400,700">
+  <link rel="alternate" type="application/atom+xml" title="YONDU UDONTA" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+  
+  <head>
+    
+      <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+    
+  </head>  
+
+  <body class="layout--post  파이썬-자료구조-탐색트리">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/posts/">Posts</a></li><li><a href="/categories/">Categories</a></li><li><a href="/tags/">Tags</a></li><li><a href="/photos/">Photos</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+      <a href="/" class="site-logo" rel="home" title="YONDU UDONTA">
+        <img src="/images/yondu-udonta-logo.png" class="site-logo-img animated fadeInDown" alt="YONDU UDONTA">
+      </a>
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">YONDU UDONTA</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">I'm Mary Poppins, Y'all!</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <style>
+  .e-content{
+  text-align:justify}
+</style>
+
+<main id="main" class="main-content" aria-label="Content">
+  <article class="h-entry">
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title p-name">파이썬 자료구조: 탐색트리
+</h1>
+        
+      </header>
+
+      <div class="page-sidebar">
+        <div class="page-author h-card p-author"><img src="/images/yondu-udonta-logo.png" class="author-avatar u-photo" alt="Yondu Udonta"><div class="author-info"><div class="author-name">
+        <em>by</em> <span class="p-name">Yondu Udonta</span>
+      </div><ul class="author-links"><li class="author-link">
+            <a class="u-url" rel="me" href="https://github.com/boreum0302"><i class="fab fa-github-square fa-lg" title="GitHub"></i></a>
+          </li><li class="author-link">
+            <a class="u-url" rel="me" href="mailto:bureom0302@gmail.com"><i class="fas fa-envelope-square fa-lg" title="e-mail"></i></a>
+          </li></ul>
+    <time class="page-date dt-published" datetime="2020-04-07T00:00:00+09:00"><a class="u-url" href="">April 7, 2020</a>
+</time>
+
+  </div>
+</div>
+
+        
+  <h3 class="page-taxonomies-title">Categories</h3>
+  
+  <ul class="page-taxonomies"><li class="page-taxonomy"><a class="p-category" href="/categories/#data-structure" title="Pages filed under Data Structure">Data Structure</a></li>
+  </ul>
+
+
+        
+  <h3 class="page-taxonomies-title">Tags</h3>
+  
+  <ul class="page-taxonomies"><li class="page-taxonomy"><a href="/tags/#python" title="Pages tagged python" rel="tag">python</a></li>
+  </ul>
+
+
+      </div>
+
+      <div class="page-content">
+        <div class="e-content">
+          <p>이진탐색트리(binary search tree)는 정렬된 값들이 리스트에 존재할 때 주어진 값을 빠르게 찾는 방법인 이진탐색(binary tree)을 트리에 접목한 자료구조이다. 단순연결리스트에 비해, 저장된 값을 탐색하거나 임의의 값을 삽입하고 삭제하는 연산을 수행하는 데에 시간이 적게 걸린다는 장점이 있다. 이진탐색트리를 직접 구현해본 다음, 이진탐색트리에 기반한 자료구조인 AVL 트리, 2-3 트리, 좌편향 레드블랙트리(left-leaning red-black tree), B-트리에 대해서도 간단히 정리했다.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#이진탐색binary-search" id="markdown-toc-이진탐색binary-search">이진탐색(binary search)</a></li>
+  <li><a href="#이진탐색트리binary-search-tree" id="markdown-toc-이진탐색트리binary-search-tree">이진탐색트리(binary search tree)</a>    <ul>
+      <li><a href="#임의의-키값을-가지는-노드-탐색하기" id="markdown-toc-임의의-키값을-가지는-노드-탐색하기">임의의 키값을 가지는 노드 탐색하기</a></li>
+      <li><a href="#키값이-가장-작은-노드-탐색하기" id="markdown-toc-키값이-가장-작은-노드-탐색하기">키값이 가장 작은 노드 탐색하기</a></li>
+      <li><a href="#임의의-키값을-가지는-노드-삽입하기" id="markdown-toc-임의의-키값을-가지는-노드-삽입하기">임의의 키값을 가지는 노드 삽입하기</a></li>
+      <li><a href="#키값이-가장-작은-노드-삭제하기" id="markdown-toc-키값이-가장-작은-노드-삭제하기">키값이 가장 작은 노드 삭제하기</a></li>
+      <li><a href="#임의의-키값을-가지는-노드-삭제하기" id="markdown-toc-임의의-키값을-가지는-노드-삭제하기">임의의 키값을 가지는 노드 삭제하기</a></li>
+      <li><a href="#연산의-수행시간-계산하기" id="markdown-toc-연산의-수행시간-계산하기">연산의 수행시간 계산하기</a></li>
+    </ul>
+  </li>
+  <li><a href="#avl-트리" id="markdown-toc-avl-트리">AVL 트리</a>    <ul>
+      <li><a href="#회전을-통해-높이의-균형-유지하기" id="markdown-toc-회전을-통해-높이의-균형-유지하기">회전을 통해 높이의 균형 유지하기</a></li>
+      <li><a href="#임의의-키값을-가지는-노드-삽입하기-1" id="markdown-toc-임의의-키값을-가지는-노드-삽입하기-1">임의의 키값을 가지는 노드 삽입하기</a></li>
+      <li><a href="#임의의-키값을-가지는-노드-삭제하기-1" id="markdown-toc-임의의-키값을-가지는-노드-삭제하기-1">임의의 키값을 가지는 노드 삭제하기</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-3-트리" id="markdown-toc-2-3-트리">2-3 트리</a></li>
+  <li><a href="#좌편향-레드블랙트리left-leaning-red-black-tree" id="markdown-toc-좌편향-레드블랙트리left-leaning-red-black-tree">좌편향 레드블랙트리(left-leaning red-black tree)</a></li>
+  <li><a href="#b-트리" id="markdown-toc-b-트리">B-트리</a></li>
+</ul>
+
+<h2 id="이진탐색binary-search">이진탐색(binary search)</h2>
+
+<p>리스트 <code class="language-plaintext highlighter-rouge">a</code>가 정렬되어 있었다면 탐색에 걸리는 시간은 \(O(log N)\)이다. 만일 정렬되어 있지 않았다면, 순차탐색(sequential search)을 수행해야 하기 때문에 \(O(N)\)의 시간이 걸린다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 정수들이 정렬된 리스트 a에서 t라는 값이 존재하는 index를 탐색하기
+</span><span class="k">def</span> <span class="nf">binary_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">left</span> <span class="o">&gt;</span> <span class="n">right</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    
+    <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+    
+    <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mid</span>
+    
+    <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">t</span><span class="p">:</span>
+        <span class="n">binary_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">binary_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="이진탐색트리binary-search-tree">이진탐색트리(binary search tree)</h2>
+
+<p>이진탐색트리(binary search tree)는 각 노드 <code class="language-plaintext highlighter-rouge">node</code>의 키값이 <code class="language-plaintext highlighter-rouge">node</code>의 왼쪽 서브트리에 있는 노드들의 키값들보다 크고, <code class="language-plaintext highlighter-rouge">n</code>의 오른쪽 서브트리에 있는 노드의 키값들보다 작은 이진트리이다. 그래서 이진탐색트리에서 중위순회를 수행하면 정렬된 출력을 얻게 된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
+        
+<span class="k">class</span> <span class="nc">BST</span><span class="p">:</span>
+    
+    <span class="k">class</span> <span class="nc">EmptyError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h3 id="임의의-키값을-가지는-노드-탐색하기">임의의 키값을 가지는 노드 탐색하기</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># key를 키값으로 가지는 노드의 항목 반환하기
+</span>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_item</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>  
+        
+    <span class="k">def</span> <span class="nf">get_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&gt;</span> <span class="n">key</span><span class="p">:</span>  <span class="c1"># 방문한 노드의 키값이 key보다 크다면
+</span>            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_item</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>  <span class="c1"># 왼쪽 서브트리 탐색하기
+</span>        
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">:</span>  <span class="c1"># 방문한 노드의 키값이 key보다 작다면
+</span>            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_item</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>  <span class="c1"># 오른쪽 서브트리 탐색하기
+</span>        
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># 방문한 노드의 키값이 key와 같다면
+</span>            <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">value</span>  <span class="c1"># 노드의 항목 반환하기
+</span></code></pre></div></div>
+
+<h3 id="키값이-가장-작은-노드-탐색하기">키값이 가장 작은 노드 탐색하기</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 가장 작은 키값을 가진 노드 반환하기
+</span>    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">minimum</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">minimum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># 방문한 노드의 왼쪽 자식이 없다면 그 노드의 키값이 가장 작은 것이므로
+</span>            <span class="k">return</span> <span class="n">node</span>  <span class="c1"># 노드 반환하기
+</span>        
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>  <span class="c1"># 왼쪽 자식에서부터 다시 탐색 시작하기
+</span></code></pre></div></div>
+
+<h3 id="임의의-키값을-가지는-노드-삽입하기">임의의 키값을 가지는 노드 삽입하기</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># key와 value를 키값과 항목으로 가지는 노드 삽입하기
+</span>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">put_item</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">put_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>  <span class="c1"># 새 노드 생성하기
+</span>        
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&gt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">put_item</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">put_item</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># key가 이미 트리 내부에 존재하면
+</span>            <span class="n">node</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># value를 갱신하기
+</span>        
+        <span class="k">return</span> <span class="n">node</span>
+</code></pre></div></div>
+
+<h3 id="키값이-가장-작은-노드-삭제하기">키값이 가장 작은 노드 삭제하기</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 키값이 가장 작은 노드 삭제하기
+</span>    <span class="k">def</span> <span class="nf">delete_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmptyError</span><span class="p">(</span><span class="s">'Underflow'</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_min</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+   
+    <span class="k">def</span> <span class="nf">del_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>
+        
+        <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_min</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">node</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    #     50      
+    #    /  \         
+    #   30  80   
+    #  /  \   \    
+    # 10  40  90    
+    #  \
+    #  15
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    del_min(root):
+        root.left = del_min(root.left)
+        del_min(root.left):
+            root.left.left = del_min(root.left.left)
+            del_min(root.left.left):
+                return root.left.left.right  # 15
+            return root.left  #   30
+                              #  /  \
+                              # 15  40
+        return root  #     50
+                     #    /  \
+                     #   30  80
+                     #  /  \   \
+                     # 15  40  90
+</code></pre></div></div>
+
+<h3 id="임의의-키값을-가지는-노드-삭제하기">임의의 키값을 가지는 노드 삭제하기</h3>
+
+<p>삭제할 노드 <code class="language-plaintext highlighter-rouge">node</code>의 자식 수에 따라 처리 방법이 달라진다. 자식이 없는 경우 <code class="language-plaintext highlighter-rouge">node</code>의 부모에 <code class="language-plaintext highlighter-rouge">node</code> 대신 <code class="language-plaintext highlighter-rouge">None</code>을 연결하고, 자식이 하나라면 <code class="language-plaintext highlighter-rouge">node</code>의 부모에 <code class="language-plaintext highlighter-rouge">node</code>의 자식을 직접 연결한다. 자식이 둘일 때가 좀 까다롭다. 먼저 중위후속자(inorder successor)의 개념을 알아야 한다. 노드 <code class="language-plaintext highlighter-rouge">node</code>의 중위후속자는 트리를 중위순회할 때 <code class="language-plaintext highlighter-rouge">node</code> 직후에 방문되는 노드이다. <code class="language-plaintext highlighter-rouge">node</code>의 자식이 둘이라면, <code class="language-plaintext highlighter-rouge">node</code>의 중위후속자를 떼어내서 <code class="language-plaintext highlighter-rouge">node</code>가 있던 자리에 올리면 된다. 이때, <code class="language-plaintext highlighter-rouge">node</code>의 중위후속자는 <code class="language-plaintext highlighter-rouge">node</code>의 오른쪽 서브트리에서 키값이 가장 작은 노드이기 때문에 <code class="language-plaintext highlighter-rouge">node</code>의 오른쪽 서브트리에서 <code class="language-plaintext highlighter-rouge">del_min()</code> 연산을 수행해주어야 한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 키값이 key인 노드 삭제하기
+</span>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_node</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">del_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&gt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_node</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_node</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># 키값이 key인 노드를 방문함
+</span>            
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># 노드의 오른쪽 자식이 없는 경우
+</span>                <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span>  <span class="c1"># 노드의 왼쪽 자식을 반환하기
+</span>            
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># 노드의 오른쪽 자식은 있지만 왼쪽 자식이 없는 경우
+</span>                <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>  <span class="c1"># 노드의 오른쪽 자식을 반환하기
+</span>            
+            <span class="n">target</span> <span class="o">=</span> <span class="n">node</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>  <span class="c1"># target의 중위후속자는 minimum(target.right)임
+</span>            <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_min</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>  <span class="c1"># target의 중위후속자를 삭제한 target의 오른쪽 서브트리를 node에 연결하기
+</span>            <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">target</span><span class="p">.</span><span class="n">left</span>  <span class="c1"># target의 왼쪽 서브트리를 node에 연결하기
+</span>            
+        <span class="k">return</span> <span class="n">node</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    #       60
+    #      /  \
+    #     50  70
+    #    /
+    #   20
+    #  /  \
+    # 10  45
+    #     /
+    #    35
+    #   /  \
+    #  25  40
+    #   \
+    #   30
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    del_node(root, 20):
+        root.left = del_node(root.left, 20)
+        del_node(root.left, 20):
+            root.left.left = del_node(root.left.left, 20)
+            del_node(root.left.left, 20):
+                target = root.left.left  # 20
+                root.left.left = minimum(target.right)  # 25
+                root.left.left.right = del_min(target.right)  #      45
+                                                              #     /
+                                                              #    35
+                                                              #   /  \
+                                                              #  30  40
+                return root.left.left  #   25
+                                       #  /  \
+                                       # 10  40
+                                       #     /
+                                       #    35
+                                       #   /  \
+                                       #  30  40
+            return root.left  #     50
+                              #    /
+                              #   25
+                              #  /  \
+                              # 10  45
+                              #     /
+                              #    35
+                              #   /  \
+                              #  30  40
+        return root  #       60
+                     #      /  \
+                     #     50  70
+                     #    /
+                     #   25
+                     #  /  \
+                     # 10  45
+                     #     /
+                     #    35
+                     #   /  \
+                     #  25  40
+                     #   \
+                     #   30
+</code></pre></div></div>
+
+<h3 id="연산의-수행시간-계산하기">연산의 수행시간 계산하기</h3>
+<p>탐색, 삽입, 삭제 연산의 수행시간은 이진탐색트리의 높이에 비례한다. 따라서 최악의 경우에 수행시간은  \(O(N)\)이다. 하지만 빈 이진탐색트리에 랜덤하게 선택된 \(N\)개의 키를 삽입할 때 트리의 높이는 약 \(1.39logN\)임이 알려져 있기에 평균 수행시간은 \(O(N)\)보다 작다.</p>
+
+<h2 id="avl-트리">AVL 트리</h2>
+<p>AVL 트리는 각각의 노드에 대해 왼쪽 서브트리의 높이와 오른쪽 서브트리의 높이 차이가 1 이하인 이진탐색트리이다. \(N\)개의 노드를 가진 AVL 트리의 높이는 \(O(log N)\)이 되므로 탐색, 삽입, 삭제 연산에 걸리는 시간이 항상 \(O(log N)\)으로 유지된다는 장점이 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
+        
+<span class="k">class</span> <span class="nc">AVL</span><span class="p">:</span>
+    
+    <span class="k">class</span> <span class="nc">EmptyError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+        
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">height</span>
+</code></pre></div></div>
+
+<h3 id="회전을-통해-높이의-균형-유지하기">회전을 통해 높이의 균형 유지하기</h3>
+
+<p>AVL 트리에서는 높이의 불균형이 발생했을 경우 이를 없애기 위한 회전 연산을 제공한다.</p>
+
+<p><img src="/images/2020-04-07-rotation.gif" alt="(1)" class="align-center" /></p>
+
+<p><img src="/images/2020-04-07-LL.png" alt="(2)" class="align-center" /></p>
+
+<p><img src="/images/2020-04-07-RR.png" alt="(3)" class="align-center" /></p>
+
+<p><img src="/images/2020-04-07-LR.png" alt="(4)" class="align-center" /></p>
+
+<p><img src="/images/2020-04-07-RL.png" alt="(5)" class="align-center" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 우회전
+</span>    <span class="k">def</span> <span class="nf">rotate_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span>
+        <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">temp</span><span class="p">.</span><span class="n">right</span>
+        <span class="n">temp</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="n">node</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">temp</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">right</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">temp</span>
+        
+    <span class="c1"># 좌회전    
+</span>    <span class="k">def</span> <span class="nf">rotate_left</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>
+        <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">temp</span><span class="p">.</span><span class="n">left</span>
+        <span class="n">temp</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="n">node</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">temp</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">right</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">temp</span>
+    
+    <span class="c1"># 왼쪽 서브트리와 오른쪽 서브트리의 높이 차이 반환하기
+</span>    <span class="k">def</span> <span class="nf">bf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+    
+    <span class="c1"># 불균형 없애기
+</span>    <span class="k">def</span> <span class="nf">balance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">bf</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">bf</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># 왼쪽 자식의 오른쪽 서브트리가 높은 경우 LR 회전하기
+</span>                <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">rotate_left</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">rotate_right</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="c1"># 왼쪽 자식의 왼쪽 서브트리가 높은 경우에는 LL 회전하기
+</span>        <span class="k">elif</span> <span class="bp">self</span><span class="p">.</span><span class="n">bf</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">bf</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># 오른쪽 자식의 왼쪽 서브트리가 높은 경우에는 RL 회전하기
+</span>                <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">rotate_right</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">rotate_left</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>  <span class="c1"># 오른쪽 자식의 오른쪽 서브트리가 높은 경우에는 RR 회전하기
+</span>        <span class="k">return</span> <span class="n">node</span>
+</code></pre></div></div>
+
+<h3 id="임의의-키값을-가지는-노드-삽입하기-1">임의의 키값을 가지는 노드 삽입하기</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># key와 value를 키값과 항목으로 가지는 노드 삽입하기
+</span>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">put_item</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">put_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&gt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">put_item</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">put_item</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="n">node</span>
+        <span class="n">node</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># 노드의 높이 갱신하기
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">balance</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>  <span class="c1"># 노드의 균형 유지하기
+</span></code></pre></div></div>
+
+<h3 id="임의의-키값을-가지는-노드-삭제하기-1">임의의 키값을 가지는 노드 삭제하기</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 키값이 key인 노드 삭제하기
+</span>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_node</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">del_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&gt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_node</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_node</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">node</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">del_min</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">target</span><span class="p">.</span><span class="n">left</span>
+        <span class="n">node</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># 노드의 높이 갱신하기
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">balance</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>  <span class="c1"># 노드의 균형 유지하기
+</span></code></pre></div></div>
+
+<h2 id="2-3-트리">2-3 트리</h2>
+<p>2-3 트리는 이파리의 레벨이 전부 동일하며 차수가 2이거나 3인 노드로만 구성된 트리이다. 차수가 2인 노드를 2-노드라 하고 차수가 3인 노드를 3-노드라 한다. 노드의 키값과 서브트리의 키값들 사이의 관계는 이진탐색트리에서와 같다.</p>
+
+<p><img src="/images/2020-04-07-2-3-tree.png" alt="(5)" class="align-center" /></p>
+
+<h2 id="좌편향-레드블랙트리left-leaning-red-black-tree">좌편향 레드블랙트리(left-leaning red-black tree)</h2>
+<p>좌편향 레드블랙트리는 아래의 조건을 만족하는 이진탐색트리이다. 2-3 트리에서 3-노드에 있는 2개의 키를 2개의 노드로 분리하여 저장한 뒤 왼쪽을 레드 오른쪽을 블랙으로 칠한 형태와 동일하다 볼 수 있다. AVL 트리, 2-3 트리보다 성능이 우수하다고 알려져 있다.</p>
+
+<ul>
+  <li>루트와 <code class="language-plaintext highlighter-rouge">None</code>은 블랙임</li>
+  <li>루트로부터 각각의 <code class="language-plaintext highlighter-rouge">None</code>까지 2개의 연속된 레드 <code class="language-plaintext highlighter-rouge">link</code>가 존재할 수 없음</li>
+  <li>루트로부터 각각의 <code class="language-plaintext highlighter-rouge">None</code>까지의 경로에 있는 블랙 <code class="language-plaintext highlighter-rouge">link</code>의 수는 전부 같음</li>
+  <li>레드 <code class="language-plaintext highlighter-rouge">link</code>는 왼쪽으로 기울어져 있음</li>
+</ul>
+
+<h2 id="b-트리">B-트리</h2>
+<p>B-트리는 노드에 수백에서 수천 개의 키를 저장하여 높이를 낮춘 트리이다. 아래의 조건을 만족하는 트리를 차수가 M인 B-트리라 한다. 키의 삽입에는 분리 연산이, 키의 삭제에는 이동 연산과 통합 연산을 사용한다 알려져 있다. 탐색, 삽입, 삭제 연산을 수행하는 데 걸리는 시간은 B-트리의 높이에 비례한다. 차수가 \(M\)이고 키의 개수가 \(N\)인 B-트리의 최대 높이는 \(O(log_{M/2}N)\)이다.</p>
+
+<ul>
+  <li>이파리의 레벨은 전부 동일함</li>
+  <li>각 내부노드의 자식 수는 \(\left \lceil{M/2}\right \rceil\) 이상 \(M\) 이하임</li>
+  <li>루트의 차수는 2 이상임</li>
+</ul>
+
+<p><strong>Reference</strong> 파이썬과 함께하는 자료구조의 이해 / 양성봉 지음 / 생능출판사</p>
+
+        </div>
+
+        
+          <div class="page-share">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fsearch-tree%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--facebook btn--small"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i> <span>Share</span></a>
+  <a href="https://twitter.com/intent/tweet?text=%ED%8C%8C%EC%9D%B4%EC%8D%AC+%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%3A+%ED%83%90%EC%83%89%ED%8A%B8%EB%A6%AC%20http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fsearch-tree%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fsearch-tree%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=%ED%8C%8C%EC%9D%B4%EC%8D%AC+%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%3A+%ED%83%90%EC%83%89%ED%8A%B8%EB%A6%AC&url=http%3A%2F%2Flocalhost%3A4000%2Fdata%2520structure%2Fsearch-tree%2F" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+        
+
+        
+
+        <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/data%20structure/binary-tree-and-heap/">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> 파이썬 자료구조: 이진트리와 힙
+
+      </span>
+    </a>
+  
+
+  
+    <a class="page-next" href="/data%20structure/graph/">
+      <h4 class="page-pagination-label">Next</h4>
+      <span class="page-pagination-title">
+        파이썬 자료구조: 그래프
+ <i class="fas fa-arrow-right"></i>
+      </span>
+    </a>
+  
+</nav>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://github.com/boreum0302"><i class="fab fa-github-square fa-2x" title="GitHub"></i></a><a class="social-icon" href="mailto:bureom0302@gmail.com"><i class="fas fa-envelope-square fa-2x" title="e-mail"></i></a></div><div class="copyright">
+    
+      <p>Powered by <a href="https://jekyllrb.com/"><strong>Jekyll</strong></a> and <a href="https://github.com/mmistakes/so-simple-theme"><strong>So Simple Theme</strong></a>.</p>
+
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+
+<script>
+// http://docs.mathjax.org/en/latest/upgrading/v2.html
+MathJax = {
+  tex: {
+      tags: "ams"    // eq numbering options: none, ams, all
+  },
+  options: {
+    renderActions: {
+      // for mathjax 3, handle <script "math/tex"> blocks inserted by kramdown
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+        }
+      }, '']
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  </body>
+
+</html>
