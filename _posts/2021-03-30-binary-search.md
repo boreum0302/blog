@@ -1,5 +1,5 @@
 ---
-title: "이진탐색(Binary Search) - 상한(Upper Bound)과 하한(Lower Bound) "
+title: "이진탐색- 상한과 하한"
 categories:
   - Algorithm
 tags:
