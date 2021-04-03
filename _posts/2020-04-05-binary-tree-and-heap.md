@@ -61,40 +61,55 @@ class BinaryTree:
 
 ```python
     # 전위순회(Node -> Left -> Right)
-    def preorder(self, node):  
+    def preorder(self):
+        return self.preorder_assist(self.root, [])
+    
+    def preorder_assist(self, node, result)  # result에 전위순회 결과를 저장
         if node != None:
-            print(str(node.item), end=' ')
+            result.append(node.item)
             if node.left:
-                self.preorder(node.left)
+                self.preorder_assist(node.left)
             if node.right:
-                self.preorder(node.right)
+                self.preorder_assist(node.right)
+        return result
     
     # 후위순회(Left -> Right -> Node)
-    def postorder(self, node): 
+    def postorder(self):
+        return self.postorder_assist(self.root, [])
+    
+    def postorder_assist(self, node, result)  # result에 후위순회 결과를 저장
         if node != None:
             if node.left:
-                self.postorder(node.left)
+                self.postorder_assist(node.left)
             if node.right:
-                self.postorder(node.right)
-            print(str(node.item), end=' ')
+                self.postorder_assist(node.right)
+            result.append(node.item)
+        return result
     
     # 중위순회(Left -> Node -> Right)
-    def inorder(self, node): 
+    def inorder(self):
+        return self.inorder_assist(self.root, [])
+    
+    def inorder_assist(self, node, result):  # result에 중위순회 결과를 저장
         if node != None:
             if node.left:
                 self.inorder(node.left)
-            print(str(node.item), end=' ')
+            result.append(node.item)
             if node.right:
                 self.inorder(node.right)
+        return result
     
     # 레벨순회(최상위 레벨부터 시작하여 각 레벨마다 왼쪽에서 오른쪽으로 노드를 방문함)      
-    def levelorder(self, node):  
+    def levelorder(self):
+        return self.levelorder_assist(self.root, [])
+   
+	def levelorder_assist(self, node, result)  # result에 레벨순회 결과를 저장
         if node == None:
-            return
+            return result
         q = [node]
         while len(q) > 0:
             new_node = q.pop(0)
-            print(new_node.item, end=' ')
+            result.append(new_node.item)
             if new_node.left != None:
                 q.append(new_node.left)
             if new_node.right != None:
