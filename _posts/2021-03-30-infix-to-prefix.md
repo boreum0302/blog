@@ -19,7 +19,6 @@ use_math: true
 ```python
 def infix_to_postfix(expression, operator):
     
-    # operator는 연산자들의 리스트로 앞쪽에 있을수록 우선순위가 높음
     rank = {}
     for i in range(len(operator)):
         rank[operator[i]] = i
