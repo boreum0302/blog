@@ -1,5 +1,5 @@
 ---
-title: "스택의 활용: 중위 표기를 후위 표기로 변환"
+title: "중위 표기를 후위 표기로 변환하기"
 categories:
   - Algorithm
 tags:

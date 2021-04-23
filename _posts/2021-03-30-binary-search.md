@@ -1,5 +1,5 @@
 ---
-title: "이진탐색: 상한과 하한"
+title: "이진탐색으로 상한과 하한 찾기"
 categories:
   - Algorithm
 tags:

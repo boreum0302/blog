@@ -1,5 +1,5 @@
 ---
-title: "오일러 경로"
+title: "오일러 경로·회로 찾기"
 categories:
   - Algorithm
 tags:
