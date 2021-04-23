@@ -4,6 +4,8 @@ categories:
   - Algorithm
 tags:
   - python
+  - dfs
+  - stack
 use_math: true
 ---
 

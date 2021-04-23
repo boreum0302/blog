@@ -4,6 +4,7 @@ categories:
   - Algorithm
 tags:
   - python
+  - stack
 use_math: true
 ---
 

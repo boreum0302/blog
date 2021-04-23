@@ -4,6 +4,7 @@ categories:
   - Algorithm
 tags:
   - python
+  - binary search
 use_math: true
 ---
 
