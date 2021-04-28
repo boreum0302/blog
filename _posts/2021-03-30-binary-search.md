@@ -22,13 +22,13 @@ def binary_search(list_, key):
 	while l <= r:
 		m = (l + r)//2
 		if key > list_[m]:
-        	l = m + 1
-        elif key < list_[m]:
-        	r = m - 1
-        else:
-        	return m
-    
-    return None
+			l = m + 1
+		elif key < list_[m]:
+			r = m - 1
+		else:
+			return m
+			
+	return None
 ```
 
 ## 상한(Upper Bound) 찾기  
@@ -43,11 +43,11 @@ def binary_search_UB(list_, key):
 	while l < r:
 		m = (l + r)//2
 		if key >= list_[m]:
-        	l = m + 1
-        else:
-        	r = m
-    
-    return l
+			l = m + 1
+		else:
+			r = m
+			
+	return l
 ```
 
 ## 하한(Lower Bound) 찾기  
@@ -62,9 +62,9 @@ def binary_search_LB(list_, key):
 	while l < r:
 		m = (l + r)//2
 		if key <= list_[m]:
-        	r = m
-        else:
-        	l = m + 1
-    
-    return l
+			r = m
+		else:
+			l = m + 1
+			
+	return l
 ```
