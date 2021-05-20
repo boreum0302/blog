@@ -3,7 +3,7 @@ title: "Airline on-time performance"
 categories:
   - Project
 tags:
-  - R
+  - R, visualization
 use_math: true
 ---
 
