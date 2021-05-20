@@ -14,7 +14,7 @@ Have you ever been stuck in an airport because your flight was delayed or cancel
 
 ## Part 1. Constructing database
 
-```{r}
+```python
 ## Prerequisite ----
 library(readr)
 library(dplyr)
@@ -55,7 +55,7 @@ dbDisconnect(con)
 
 ## Part 2. Basic Questions
 
-```{r include=FALSE}
+```python
 library(RSQLite)
 library(tidyverse)
 library(lubridate)
@@ -63,7 +63,7 @@ library(ggrepel)
 Sys.setlocale("LC_ALL", "English")
 ```
 
-```{r warning=FALSE}
+```python
 con = dbConnect(SQLite(), "project.sqlite")
 ```
 
@@ -71,13 +71,13 @@ con = dbConnect(SQLite(), "project.sqlite")
 
 1. We first start by exploring the airports table. Using `dplyr::filter()`, find out which airports the codes “SNA”, “SJC”, and “SMF” belong to.
 
-    ```{r warning=FALSE}
+    ```python
     SNA.SJC.SMF = dplyr::tbl(con, "airports") %>%
       filter(IATA %in% c("SNA", "SJC", "SMF")) %>%
       collect() %>%
       print(width = Inf)
     ```
-    ```
+    ```python
     ## # A tibble: 3 x 14
     ##   `Airport ID` Name                                            City      
     ##          <dbl> <chr>                                           <chr>     
@@ -100,7 +100,7 @@ con = dbConnect(SQLite(), "project.sqlite")
 
 2. Aggregate the counts of flights to all three of these airports at the monthly level (in the flights table) into a new data frame `airportcounts`. You may find `dplyr` functions `group_by()`, `summarise()`, `collect()`, and the pipe operator `%>%` useful.
 
-    ```{r warning=FALSE}
+    ```python
     airportcounts = dplyr::tbl(con, "flights") %>%
       filter(Cancelled == 0) %>%
       select(Year, Month, Dest) %>%
@@ -132,13 +132,13 @@ con = dbConnect(SQLite(), "project.sqlite")
 
 3. Add a new column to airportcounts by constructing a `Date` variable from the variables `Year` and `Month` (using helper functions from the `lubridate` package). Sort the rows in ascending order of dates.
 
-    ```{r warning=FALSE}
+    ```python
     airportcounts = airportcounts %>%
       mutate(Date = make_date(Year, Month, 1)) %>%
       arrange(Date) %>%
       print(width = Inf)
     ```
-    ```
+    ```python
     ## # A tibble: 216 x 6
     ##     Year Month   SNA   SJC   SMF Date      
     ##    <dbl> <dbl> <int> <int> <int> <date>    
@@ -159,7 +159,7 @@ con = dbConnect(SQLite(), "project.sqlite")
 
 4. From `airportcounts`, generate a time series plot that plots the number of flights per month in each of the three airports in chronological order.
 
-    ```{r warning=FALSE}
+    ```python
     ggplot(data = airportcounts) +
       geom_line(mapping = aes(x = Date, y = SNA, colour = "purple")) +
       geom_line(mapping = aes(x = Date, y = SJC, colour = "orange")) +
@@ -178,7 +178,7 @@ con = dbConnect(SQLite(), "project.sqlite")
 
 5. Find the top ten months (like 2001-09) with the largest number of flights for each of the three airports.
 
-    ```{r warning=FALSE}
+    ```python
     SNA = airportcounts %>%
       arrange(desc(SNA)) %>%
       .[1:10, ]
@@ -190,32 +190,32 @@ con = dbConnect(SQLite(), "project.sqlite")
       .[1:10, ]
     ```
 
-    ```{r warning=FALSE}
+    ```python
     paste(SNA$Year, sprintf("%02d", SNA$Month), sep = "-")
     ```
-    ```
+    ```python
     ##  [1] "2006-08" "2007-08" "2007-05" "2007-07" "2007-10" "2006-07" "2006-05"
     ##  [8] "2007-03" "2006-10" "2007-04"
     ```
 
     "SNA" 공항으로 향하는 항공편이 가장 많았던 상위 10개의 달은 2006-08, 2007-08, 2007-05, 2007-07, 2007-10, 2006-07, 2006-05, 2007-03, 2006-10, 2007-04이었다.  
 
-    ```{r warning=FALSE}
+    ```python
     paste(SJC$Year, sprintf("%02d", SJC$Month), sep = "-")
     ```
 
-    ```
+    ```python
     ##  [1] "2001-08" "2001-07" "2001-05" "2001-06" "2001-03" "2001-01" "2001-04"
     ##  [8] "2001-10" "2001-02" "2003-07"
     ```
 
     "SJC" 공항으로 향하는 항공편이 가장 많았던 상위 10개의 달은 2001-08, 2001-07, 2001-05, 2001-06, 2001-03, 2001-01, 2001-04, 2001-10, 2001-02, 2003-07이었다.  
 
-    ```{r warning=FALSE}
+    ```python
     paste(SMF$Year, sprintf("%02d", SMF$Month), sep = "-")
     ```
 
-    ```
+    ```python
     ##  [1] "2007-07" "2007-08" "2007-10" "2007-05" "2007-06" "2007-09" "2007-12"
     ##  [8] "2007-11" "2008-07" "2006-08"
     ```
@@ -228,7 +228,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
 
 1. Create a data frame `delays` that contains the average arrival delay for each day in 2015 for four airlines: United (UA), Northwest (NW), American (AA), and Delta (DL). Your data frame must contain only necessary variables, to save the memory space.
 
-    ```{r warning=FALSE}
+    ```python
     delays = dplyr::tbl(con, "flights") %>%
       filter(Origin == "ORD", Dest == "MSP", Year == 2015,
              Op_Unique_Carrier %in% c("UA", "DL", "AA", "MQ"), Cancelled == 0) %>%
@@ -240,7 +240,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
       print(width = Inf)
     ```
 
-    ```
+    ```python
     ## # A tibble: 1,188 x 5
     ##     Year Month Day_of_Month Op_Unique_Carrier Avg_Arr_Delay
     ##    <dbl> <dbl>        <dbl> <chr>                     <dbl>
@@ -259,12 +259,12 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
 
 2. Compare the average delay of the four airlines by generating density plots comparing them in a single panel. In doing this, use a join function to provide the full names of the airlines in the legend of the plot. Which airline is the most reliable? Which is the least?
 
-    ```{r warning=FALSE}
+    ```python
     airlines = dplyr::tbl(con, "airlines") %>%
       collect()
     ```
     
-    ```{r warning=FALSE}
+    ```python
     ggplot(data = left_join(delays, airlines, by = c("Op_Unique_Carrier" = "Code"))) +
       geom_density(mapping = aes(x = Avg_Arr_Delay, fill = Description, colour = Description), alpha = 0.1) +
       labs(x = "Average arrival delay (min)",
@@ -284,7 +284,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
 
 1. Plot the count of all flights on Mondays in the year 2001. Explain the pattern you find in the visualization.
 
-    ```{r warning=FALSE}
+    ```python
     Monday2001 = dplyr::tbl(con, "flights") %>%
       filter(Year == 2001, Day_Of_Week == 1, Cancelled == 0) %>%
       select(Year, Month, Day_of_Month) %>%
@@ -295,13 +295,13 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
       mutate(Date = make_date(Year, Month, Day_of_Month))
     ```
     
-    ```{r warning=FALSE}
+    ```python
     Monday2001Label = Monday2001 %>%
       mutate(lag_n = lag(n), lead_n = lead(n), before = lag_n - n, after = lead_n - n) %>%
       filter(row_number(desc(before)) < 5 | row_number(desc(after)) < 5)
     ```
     
-    ```{r warning=FALSE}
+    ```python
     ggplot(data = Monday2001, mapping = aes(x = Date, y = n)) +
       geom_point() +
       geom_line() +
@@ -313,7 +313,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
     
     ![(3)](/images/2021-05-21-part2-q3-1.png){: .align-center}
     
-    ```{r warning=FALSE}
+    ```python
     December = dplyr::tbl(con, "flights") %>%
       filter(Cancelled == 0, Month == 12) %>%
       group_by(Year, Day_of_Month) %>%
@@ -323,7 +323,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
       collect()
     ```
 
-    ```{r warning=FALSE}
+    ```python
     ggplot(data = December, mapping = aes(x = Day_of_Month, y = n)) +
       geom_point() +
       geom_line() +
@@ -337,7 +337,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
 
 2. Repeat 1 for the year 2011.
 
-    ```{r warning=FALSE}
+    ```python
     Monday2011 = dplyr::tbl(con, "flights") %>%
       filter(Year == 2011, Day_Of_Week == 1, Cancelled == 0) %>%
       select(Year, Month, Day_of_Month) %>%
@@ -348,13 +348,13 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
       mutate(Date = make_date(Year, Month, Day_of_Month))
     ```
     
-    ```{r warning=FALSE}
+    ```python
     Monday2011Label = Monday2011 %>%
       mutate(lag_n = lag(n), lead_n = lead(n), before = lag_n - n, after = lead_n - n) %>%
       filter(row_number(desc(before)) < 5 | row_number(desc(after)) < 5)
     ```
     
-    ```{r warning=FALSE}
+    ```python
     ggplot(data = Monday2011, mapping = aes(x = Date, y = n)) +
       geom_point() +
       geom_line() +
@@ -366,7 +366,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
     
     ![(5)](/images/2021-05-21-part2-q3-3.png){: .align-center}
     
-    ```{r warning=FALSE}
+    ```python
     July = dplyr::tbl(con, "flights") %>%
       filter(Cancelled == 0, Month == 7) %>%
       group_by(Year, Day_of_Month) %>%
@@ -376,7 +376,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
       collect()
     ```
     
-    ```{r warning=FALSE}
+    ```python
     ggplot(data = July, mapping = aes(x = Day_of_Month, y = n)) +
       geom_point() +
       geom_line() +
@@ -386,7 +386,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
     
     ![(6)](/images/2021-05-21-part2-q3-4.png){: .align-center}
     
-    ```{r warning=FALSE}
+    ```python
     Monday2011Cancelled = dplyr::tbl(con, "flights") %>%
       filter(Year == 2011, Day_Of_Week == 1, Cancelled == 1) %>%
       select(Year, Month, Day_of_Month, Cancellation_Code) %>%
@@ -394,7 +394,7 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
       mutate(Date = make_date(Year, Month, Day_of_Month))
     ```
     
-    ```{r warning=FALSE}
+    ```python
     ggplot(data = Monday2011Cancelled) +
       geom_bar(mapping = aes(Date, fill = Cancellation_Code), position = "stack") +
       scale_x_date(date_labels = "%b %d", date_breaks = "1 months", minor_breaks = NULL) +
@@ -407,10 +407,10 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
     
     위에서와 같이 항공편의 수가 큰 폭으로 변동하는 시점을 한눈에 알아볼 수 있게 하기 위해서 `Monday2011Label` 테이블을 생성한 뒤 `geom_label_repel()` 함수를 적용했다. 플랏팅 결과 휴가철인 여름에 항공편의 수가 전체적으로 증가하는 양상이었지만 7월 4일에만 갑자기 하락했다 회복된 점이 특이했다. 이유는 미국에서 7월 4일이 공휴일인 독립기념일이기 때문인 것으로 생각된다. `July` 테이블을 생성하여 7월의 각 일마다 연별 평균 항공편의 수를 집계한 결과 실제 7월 4일을 전후하여 항공편의 수가 줄어듦을 확인할 수 있었다. 5월 30일의 경우는 위에서 확인했듯이 공휴일인 Memorial Day이기 때문에 항공편의 수가 줄어든 것으로 추론된다. 한편 1월 10일, 8월 29일에 항공편의 수가 급락한 까닭은 기상 악화인 것으로 여겨진다. `Monday2011Cancelled`라는 테이블을 생성하여 날짜별 결항 원인을 플랏팅한 결과 1월 10일, 8월 29일에는 날씨 때문에 대부분 결항이 발생했음을 알 수 있었다. 특히 낙폭이 가장 컸던 1월 10일 전후에는 미국에 매우 강한 눈폭풍이 발생했었다는 사실이 보고되어 있다.  
 
-```{r warning=FALSE}
+```python
 dbDisconnect(con)
 ```
-```{r include=FALSE}
+```python
 Sys.setlocale("LC_ALL", "English")
 library(RSQLite)
 library(tidyverse)
@@ -425,7 +425,7 @@ library(modelr)
 library(splines)
 ```
 
-```{r warning=FALSE}
+```python
 con = dbConnect(SQLite(), "project.sqlite")
 ```
 
@@ -439,21 +439,21 @@ Suggestions: cancelled flights do not possess delays. You may want to ignore neg
 
 #### Distribution of scheduled departure time and delays
 
-```{r warning=FALSE}
+```python
 delays.arrival = dplyr::tbl(con, "flights") %>%
   group_by(Arr_Delay) %>%
   summarise(n = n()) %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 delays.departure = dplyr::tbl(con, "flights") %>%
   group_by(Dep_Delay) %>%
   summarise(n = n()) %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 sched.dep.time = dplyr::tbl(con, "flights") %>%
   filter(Cancelled == 0) %>%
   group_by(CRS_Dep_Time) %>%
@@ -462,7 +462,7 @@ sched.dep.time = dplyr::tbl(con, "flights") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 plot1A = ggplot(data = sched.dep.time) +
   geom_bar(mapping = aes(x = sched_dep_time_m, y = n), stat = "identity", width = 1/2) +
   scale_y_log10(labels = trans_format("log10", math_format(10^.x))) +
@@ -471,7 +471,7 @@ plot1A = ggplot(data = sched.dep.time) +
   theme(axis.title.y = element_text(size = 8))
 ```
 
-```{r warning=FALSE}
+```python
 plot1B = ggplot(data = delays.arrival) +
   geom_bar(mapping = aes(x = Arr_Delay/60, y = n), stat = "identity", width = 1/120, fill = "purple") +
   scale_y_log10(labels = trans_format("log10", math_format(10^.x))) +
@@ -481,7 +481,7 @@ plot1B = ggplot(data = delays.arrival) +
   theme(axis.title.y = element_text(size = 8))
 ```
 
-```{r warning=FALSE}
+```python
 plot1C = ggplot(data = delays.departure) +
   geom_bar(mapping = aes(x = Dep_Delay/60, y = n), stat = "identity", width = 1/120, fill = "orange") +
   scale_y_log10(labels = trans_format("log10", math_format(10^.x))) +
@@ -491,7 +491,7 @@ plot1C = ggplot(data = delays.departure) +
   theme(axis.title.y = element_text(size = 8))
 ```
 
-```{r warning=FALSE}
+```python
 grid.arrange(plot1A, plot1B, plot1C, nrow = 3, ncol = 1) 
 ```
 
@@ -501,7 +501,7 @@ grid.arrange(plot1A, plot1B, plot1C, nrow = 3, ncol = 1)
 
 #### The best time of day to fly to minimise delays
 
-```{r warning=FALSE}
+```python
 delays.timely = dplyr::tbl(con, "flights") %>%
   filter(Cancelled == 0, !is.na(CRS_Dep_Time)) %>%
   select(CRS_Dep_Time, Arr_Delay, Dep_Delay) %>%
@@ -512,7 +512,7 @@ delays.timely = dplyr::tbl(con, "flights") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 plot2A = ggplot(data = delays.timely, mapping = aes(x = sched_dep_time_h)) +
   geom_area(mapping = aes(y = (1 - arr_on_time)*100, alpha = 0.2), fill = "purple") +
   geom_line(mapping = aes(y = avg_arr_delay, colour = "purple")) +
@@ -525,7 +525,7 @@ plot2A = ggplot(data = delays.timely, mapping = aes(x = sched_dep_time_h)) +
   scale_color_identity(name = "", breaks = c("purple"), guide = "legend", labels = c("Average arrival\ndelays (min)"))
 ```
 
-```{r warning=FALSE}
+```python
 plot2B = ggplot(data = delays.timely, mapping = aes(x = sched_dep_time_h)) +
   geom_area(mapping = aes(y = (1 - dep_on_time)*100, alpha = 0.2), fill = "orange") +
   geom_line(mapping = aes(y = avg_dep_delay, colour = "orange")) +
@@ -538,7 +538,7 @@ plot2B = ggplot(data = delays.timely, mapping = aes(x = sched_dep_time_h)) +
   scale_color_identity(name = "", breaks = c("orange"), guide = "legend", labels = c("Average departure\ndelays (min)"))
 ```
 
-```{r warning=FALSE}
+```python
 grid.arrange(plot2A, plot2B, nrow = 2, ncol = 1)
 ```
 
@@ -546,7 +546,7 @@ grid.arrange(plot2A, plot2B, nrow = 2, ncol = 1)
 
 하루 중 지연을 최소로 할 수 있는 항공편의 출발 시간대를 찾기 위해, DB의 `flights` table에서 출발 예정 시각별 평균 지연 시간과 지연된 항공편 비율을 집계하여 `delays.timely` table에 저장했다. `delays.timely`에 대한 플랏팅 결과, 6시에서 8시 사이에 평균 지연 시간이 가장 작게 나타났다. 시간이 지날수록 평균 지연 시간과 지연된 항공편의 비율은 완만하게 증가하다 18시에서 20시 사이에 정점에 달했다. 따라서 아침에 출발하는 경우는 최대한 빨리 출발하고, 저녁에 출발하는 경우는 20시가 지난 늦은 밤이나 1시 이전의 이른 새벽에 출발하면 작은 지연 시간을 기대할 수 있다는 결론을 얻었다.  
 
-```{r warning=FALSE}
+```python
 delays.daily.timely = dplyr::tbl(con, "flights") %>%
   filter(Cancelled == 0, !is.na(CRS_Dep_Time), Arr_Delay > 0, Dep_Delay > 0) %>%
   mutate(sched_dep_time_h = (CRS_Dep_Time %/% 100) %% 24) %>%
@@ -556,20 +556,20 @@ delays.daily.timely = dplyr::tbl(con, "flights") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 delays.daily.timely = delays.daily.timely %>%
   gather(avg_arr_delay, avg_dep_delay, key = "type", value = "avg_delay")
 ```
 
-```{r warning=FALSE}
+```python
 quantile(delays.daily.timely$avg_delay, probs = 0.9)
 ```
-```
+```python
 ##     90% 
 ## 55.0953
 ```
 
-```{r warning=FALSE}
+```python
 ggplot(data = delays.daily.timely %>% filter(sched_dep_time_h > 5, avg_delay < 60)) +
   geom_boxplot(mapping = aes(x =as_factor(sched_dep_time_h), y = avg_delay, colour = type)) +
   labs(x = "Scheduled departure time (hour)", y = "Average delays per day (min)") +
@@ -583,7 +583,7 @@ ggplot(data = delays.daily.timely %>% filter(sched_dep_time_h > 5, avg_delay < 6
 
 #### The best day of week to fly to minimise delays
 
-```{r warning=FALSE}
+```python
 delays.daily = dplyr::tbl(con, "flights") %>%
   filter(Cancelled == 0) %>%
   group_by(Year, Month, Day_of_Month) %>%
@@ -594,38 +594,38 @@ delays.daily = dplyr::tbl(con, "flights") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 delays.daily = delays.daily %>%
   filter(!is.na(avg_arr_delay), !is.na(avg_dep_delay)) %>%
   mutate(Date = make_date(Year, Month, Day_of_Month), DoW = wday(Date, label = TRUE)) %>%
   select(Date, DoW, arr_on_time, dep_on_time, avg_arr_delay, avg_dep_delay)
 ```
 
-```{r warning=FALSE}
+```python
 plot3A = ggplot(data = delays.daily) +
   geom_boxplot(mapping = aes(x = reorder(DoW, (1 - arr_on_time)*100, FUN = median), y = (1 - arr_on_time)*100), fill = "purple", alpha = 0.2) +
   labs(x = "", y = "% of flights possess\narrival delays")  
 ```
 
-```{r warning=FALSE}
+```python
 plot3B = ggplot(data = delays.daily) +
   geom_boxplot(mapping = aes(x = reorder(DoW, avg_arr_delay, FUN = median), y = avg_arr_delay), fill = "purple", alpha = 0.2) +
   labs(x = "", y = "Average arrival\ndelays per day (min)")
 ```
 
-```{r warning=FALSE}
+```python
 plot3C = ggplot(data = delays.daily) +
   geom_boxplot(mapping = aes(x = reorder(DoW, (1 - dep_on_time)*100, FUN = median), y = (1 - dep_on_time)*100), fill = "orange", alpha = 0.2) +
   labs(x = "", y = "% of flights possess\ndeparture delays")
 ```
 
-```{r warning=FALSE}
+```python
 plot3D = ggplot(data = delays.daily) +
   geom_boxplot(mapping = aes(x = reorder(DoW, avg_dep_delay, FUN = median), y = avg_dep_delay), fill = "orange", alpha = 0.2) +
   labs(x = "", y = "Average departure\ndelays per day (min)")
 ```
 
-```{r warning=FALSE}
+```python
 grid.arrange(plot3A, plot3B, plot3C, plot3D, nrow = 2, ncol = 2)
 ```
 
@@ -635,7 +635,7 @@ grid.arrange(plot3A, plot3B, plot3C, plot3D, nrow = 2, ncol = 2)
 
 #### The best time of year to fly to minimise delays
 
-```{r warning=FALSE}
+```python
 volume.origin.dest = dplyr::tbl(con, "flights") %>%
   filter(Cancelled == 0) %>%
   group_by(Origin, Dest) %>%
@@ -644,26 +644,26 @@ volume.origin.dest = dplyr::tbl(con, "flights") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 airports = dplyr::tbl(con, "airports") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 volume.origin.dest = left_join(volume.origin.dest, airports, by = c("Origin" = "IATA")) %>%
   select(Origin, Dest, n, Origin_Lat = Latitude, Origin_Long = Longitude) %>%
   left_join(airports, by = c("Dest" = "IATA")) %>%
   select(Origin, Dest, n, Origin_Lat, Origin_Long, Dest_Lat = Latitude, Dest_Long = Longitude)
 ```
 
-```{r warning=FALSE}
+```python
 volume.origin = volume.origin.dest %>%
   group_by(Origin) %>%
   summarise(n = sum(n)) %>%
   arrange(desc(n))
 ```
 
-```{r warning=FALSE}
+```python
 ggplot(data = map_data("usa")) +
   geom_polygon(mapping = aes(x = long, y = lat, group = group), fill = "gray10") +
   geom_segment(data = volume.origin.dest,
@@ -683,7 +683,7 @@ ggplot(data = map_data("usa")) +
 
 편의상 비행기가 자주 떠나는 출발지들을 추려서 분석을 진행했다. 우선 DB의 `flights` table에서 각각의 출발지와 목적지에 해당하는 항공편의 수를 집계하여 `volume.origin.dest`에 저장한 뒤 `map_data()`를 사용하여 실제 위치에 맞게 공항들과 노선들을 시각화했다. 비행기가 자주 떠나는 상위 10개의 출발지들은 `geom_label_repel`을 적용하여 이름을 붙였다.  
 
-```{r warning=FALSE}
+```python
 head(x = volume.origin %>% left_join(airports, by = c("Origin" = "IATA")) %>% select(Origin, Name, n), n = 4)
 ```
 
@@ -699,7 +699,7 @@ head(x = volume.origin %>% left_join(airports, by = c("Origin" = "IATA")) %>% se
 
 비행기가 가장 많이 떠나는 출발지들은 ATL(Hartsfield Jackson Atlanta International Airport), ORD(Chicago O'Hare International Airport), DRW(Dallas Fort Worth International Airport), LAX(Los Angeles International Airport)인 것으로 확인되었다. 이에 따라 이하 분석은 출발지가 ATL, ORD, DFW, LAX 중 하나에 해당하는 항공편에 한정했다.  
 
-```{r warning=FALSE}
+```python
 delays.monthly = dplyr::tbl(con, "flights") %>%
   filter(Cancelled == 0, Origin %in% c("ATL", "ORD", "DFW", "LAX")) %>%
   group_by(Year, Month, Origin) %>%
@@ -708,7 +708,7 @@ delays.monthly = dplyr::tbl(con, "flights") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 ggplot(data = filter(delays.monthly, Year > 2013)) +
   geom_line(mapping = aes(x = make_date(Year, Month, 1), y = avg_arr_delay, colour = "purple")) +
   geom_line(mapping = aes(x = make_date(Year, Month, 1), y = avg_dep_delay, colour = "orange")) +
@@ -724,7 +724,7 @@ ggplot(data = filter(delays.monthly, Year > 2013)) +
 
 ATL, ORD, DFW, LAX에서 출발한 항공편들에 대해 월별 평균 지연 시간을 delays.monthly에 집계한 뒤 최근 4년간의 시간에 따른 변동을 출발지마다 시각화했다. 우선 평균 도착 지연 시간과 평균 출발 지연 시간에는 큰 차이가 없었고, 각각의 출발지마다 정점들이 찍히는 지점이 흡사했다. 다시 말해, 한여름과 12월 전후에 평균 지연 시간이 상승하는 양상이 공통적으로 관찰되었다. 따라서 평균 지연 시간을 각 달마다 플랏팅하면 1, 6, 7, 8, 11, 12월에 증가하는 형태일 것으로 예상할 수 있었다.  
 
-```{r warning=FALSE}
+```python
 ggplot(data = delays.monthly %>% gather(avg_arr_delay, avg_dep_delay, key = "type", value = "avg_delay")) +
   geom_boxplot(mapping = aes(x = factor(Month), y = avg_delay, colour = type)) +
   scale_color_manual(values = c("purple", "orange"), label = c("Arrival", "Departure"), name = "") +
@@ -740,12 +740,12 @@ ggplot(data = delays.monthly %>% gather(avg_arr_delay, avg_dep_delay, key = "typ
 
 Suggestions: you may want to find a correlation between the age of the plane and the departure delay. If the data size is too big to compute the correlation, you may try to sample a fraction from the dataset.
 
-```{r warning=FALSE}
+```python
 airplanes = dplyr::tbl(con, "airplanes") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 planes.age = dplyr::tbl(con, "flights") %>%
   filter(Cancelled == 0) %>%
   select(Year, Month, Day_of_Month, CRS_Dep_Time, Tail_Num, Dep_Delay) %>%
@@ -755,7 +755,7 @@ planes.age = dplyr::tbl(con, "flights") %>%
   collect()
 ```
 
-```{r warning=FALSE}
+```python
 term = function(month){
   if(month %in% c(6, 7, 8)){return("summer")}
   else if(month %in% c(9, 10, 11)){return("fall")}
@@ -763,7 +763,7 @@ term = function(month){
 }
 ```
 
-```{r warning=FALSE}
+```python
 planes.age = planes.age %>%
   left_join(filter(airplanes, !is.na(Year), Year != "None", Year != 0), by = c("Tail_Num" ="TailNum")) %>%
   mutate(Term = map_chr(Month, term),
@@ -773,11 +773,11 @@ planes.age = planes.age %>%
   filter(Plane_Age >= 0, Dep_Time >= 5)
 ```
 
-```{r warning=FALSE}
+```python
 mod = lm(Dep_Delay ~ ns(Dep_Time, 3) + Term, data = planes.age)
 ```
 
-```{r warning=FALSE}
+```python
 plot4A = ggplot(data = planes.age %>% filter(Dep_Delay > 0)) +
   geom_hex(mapping = aes(x = Plane_Age, y = Dep_Delay)) +
   scale_fill_viridis_c(trans = "log10", name = "Number of flights") +
@@ -788,11 +788,11 @@ plot4A = ggplot(data = planes.age %>% filter(Dep_Delay > 0)) +
   theme(legend.position = "top")
 ```
 
-```{r warning=FALSE}
+```python
 planes.age = add_residuals(mod, data = planes.age)
 ```
 
-```{r warning=FALSE}
+```python
 plot4B = ggplot(data = planes.age %>% filter(Dep_Delay > 0)) +
   geom_hex(mapping = aes(x = Plane_Age, y = resid)) +
   scale_fill_viridis_c(trans = "log10", name = "Number of flights") +
@@ -803,7 +803,7 @@ plot4B = ggplot(data = planes.age %>% filter(Dep_Delay > 0)) +
   theme(legend.position = "top")
 ```
 
-```{r warning=FALSE}
+```python
 grid.arrange(plot4A, plot4B, nrow = 1)
 ```
 
@@ -811,45 +811,45 @@ grid.arrange(plot4A, plot4B, nrow = 1)
 
 항공기의 연식과 출발 지연 시간에 대한 상관관계를 분석하기 전에 용량 제한 문제를 해결하기 위해서 DB의  `flights` table을 출발 지연 시간 순으로 정렬한 다음 $\frac{1}{100}$ 계통추출을 한 뒤 0시에서 5시 사이에 출발이 예정된 항공편은 제외하여 `planes.age`라는 샘플을 얻었다(0시에서 5시 사이에 출발이 예정된 항공편은 극히 적음을 1번 문제에서 확인했음). Ordered population에서는 계통추출을 통해 생성한 추정량이 단순임의추출을 통해 생성한 추정량에 비해 분산이 작다는 사실이 알려져 있기에 이와 같은 방법을 사용한 것이다. 앞선 분석에서 항공기의 출발 지연 시간은 출발 예정 시각, 요일, 계절에 영향을 받는다는 것을 확인했다. 따라서 상관관계를 정확하게 파악하기 위해서는 출발 예정 시각, 요일, 계절에 의한 영향을 제거해야 한다. 요일의 영향은 상대적으로 미미하기 때문에 나머지 두 변수를 통해 출발 지연 시간을 설명하는 model인 `mod`를 생성했다. 계절은 범주형 변수이지만, 출발 예정 시각은 연속형 변수이다. 1번 문제에서 출발 예정 시각에 따른 출발 지연 시간은 10시와 20시에 극점을 찍기 때문에 단순한 `lm`이 아니라 `splines::ns()`를 적용했다. 항공기의 연식과 출발 지연 시간에 대한 일반적인 플랏과 출발 예정 시각, 계절에 의한 영향을 제거한 플랏을 생성한 결과 두 경우 전부 지연 시간이 0 부근인 라인에서 항공기 연식 15년을 전후하여 색이 변하는 양상이 뒤집힘을 관찰할 수 있었다(항공편의 수가 증가했다 다시 줄어듦).  
 
-```{r warning=FALSE}
+```python
 quantile(planes.age$Plane_Age, probs = 0.90)
 ```
 
-```{r warning=FALSE}
+```python
 planes.age.1 = planes.age %>%
   filter(Plane_Age < 15) %>%
   group_by(Plane_Age) %>%
   summarise(n = n(), avg_dep_delay = mean(resid[resid > 0], na.rm = TRUE))
 ```
 
-```{r warning=FALSE}
+```python
 planes.age.2 = planes.age %>%
   filter(Plane_Age > 14, Plane_Age < 22) %>%
   group_by(Plane_Age) %>%
   summarise(n = n(), avg_dep_delay = mean(resid[resid > 0], na.rm = TRUE))
 ```
 
-```{r warning=FALSE}
+```python
 mod.1 = lm(avg_dep_delay ~ Plane_Age, data = planes.age.1, weights = n)
 ```
 
-```{r warning=FALSE}
+```python
 mod.2 = lm(avg_dep_delay ~ Plane_Age, data = planes.age.2, weights = n)
 ```
 
-```{r warning=FALSE}
+```python
 grid.1 = planes.age.1 %>%
   data_grid(Plane_Age) %>%
   add_predictions(mod.1)
 ```
 
-```{r warning=FALSE}
+```python
 grid.2 = planes.age.2 %>%
   data_grid(Plane_Age) %>%
   add_predictions(mod.2)
 ```
 
-```{r warning=FALSE}
+```python
 plot4C = ggplot(data = planes.age.1) +
   geom_point(mapping = aes(x = Plane_Age, y = avg_dep_delay, size = `n`), colour = "orange") +
   geom_line(data = grid.1, mapping = aes(x = Plane_Age, y = pred)) +
@@ -860,7 +860,7 @@ plot4C = ggplot(data = planes.age.1) +
   labs(x = "Plane age (year)", y = "Residuals of average\ndeparture delays (min)", caption = "1/100 systematic sampling")
 ```
 
-```{r warning=FALSE}
+```python
 plot4D = ggplot(data = planes.age.2) +
   geom_point(mapping = aes(x = Plane_Age, y = avg_dep_delay, size = `n`), colour = "orange") +
   geom_line(data = grid.2, mapping = aes(x = Plane_Age, y = pred)) +
@@ -871,7 +871,7 @@ plot4D = ggplot(data = planes.age.2) +
   labs(x = "Plane age (year)", y = "Residuals of average\ndeparture delays (min)", caption = "1/100 systematic sampling")
 ```
 
-```{r warning=FALSE}
+```python
 grid.arrange(plot4C, plot4D, nrow = 2)
 ```
 
@@ -879,6 +879,6 @@ grid.arrange(plot4C, plot4D, nrow = 2)
 
 90%의 항공기가 연식이 21년 이하이기 때문에 연식이 21년 이하인 항공기에 대해서 연식 15년을 기준으로 `planes.age`을 `planes.age.1`과 `planes.age.2`로 분리한 다음 각각에 대해 가중 선형 회귀분석을 수행했다(가중치는 항공편의 수). 연식이 15년 미만인 항공기들에 대해서는 연식과 출발 지연 시간에 강한 양의 선형 관계가 있었다. 반면 연식이 15년 이상인 항공기들에 대해서는 연식과 출발 지연 시간에 강한 음의 선형 관계가 있었다. 이와 같은 결과가 나타난 한 가지 가능한 이유는 항공기가 운항을 시작한 이후에 결함들이 쌓이면서 출발 지연 시간이 늘어나다가 중간에 정비를 받아서 다시 줄어들기 때문일 것으로 추측된다.   
 
-```{r warning==FALSE}
+```python
 dbDisconnect(con)
 ```
