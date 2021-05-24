@@ -56,11 +56,11 @@ dbDisconnect(con)
 ## Part 2. Basic Questions
 
 ```R
+Sys.setlocale("LC_ALL", "English")
 library(RSQLite)
 library(tidyverse)
 library(lubridate)
 library(ggrepel)
-Sys.setlocale("LC_ALL", "English")
 ```
 
 ```R
@@ -405,11 +405,16 @@ Which airline was most reliable flying from Chicago O’Hare (ORD) to Minneapoli
     
     ![(7)](/images/2021-05-21-part2-q3-5.png){: .align-center}
     
-    위에서와 같이 항공편의 수가 큰 폭으로 변동하는 시점을 한눈에 알아볼 수 있게 하기 위해서 `Monday2011Label` 테이블을 생성한 뒤 `geom_label_repel()` 함수를 적용했다. 플랏팅 결과 휴가철인 여름에 항공편의 수가 전체적으로 증가하는 양상이었지만 7월 4일에만 갑자기 하락했다 회복된 점이 특이했다. 이유는 미국에서 7월 4일이 공휴일인 독립기념일이기 때문인 것으로 생각된다. `July` 테이블을 생성하여 7월의 각 일마다 연별 평균 항공편의 수를 집계한 결과 실제 7월 4일을 전후하여 항공편의 수가 줄어듦을 확인할 수 있었다. 5월 30일의 경우는 위에서 확인했듯이 공휴일인 Memorial Day이기 때문에 항공편의 수가 줄어든 것으로 추론된다. 한편 1월 10일, 8월 29일에 항공편의 수가 급락한 까닭은 기상 악화인 것으로 여겨진다. `Monday2011Cancelled`라는 테이블을 생성하여 날짜별 결항 원인을 플랏팅한 결과 1월 10일, 8월 29일에는 날씨 때문에 대부분 결항이 발생했음을 알 수 있었다. 특히 낙폭이 가장 컸던 1월 10일 전후에는 미국에 매우 강한 눈폭풍이 발생했었다는 사실이 보고되어 있다.  
+    위에서와 같이 항공편의 수가 큰 폭으로 변동하는 시점을 한눈에 알아볼 수 있게 하기 위해서 `Monday2011Label` 테이블을 생성한 뒤 `geom_label_repel()` 함수를 적용했다. 플랏팅 결과 휴가철인 여름에 항공편의 수가 전체적으로 증가하는 양상이었지만 7월 4일에만 갑자기 하락했다 회복된 점이 특이했다. 이유는 미국에서 7월 4일이 공휴일인 독립기념일이기 때문인 것으로 생각된다. `July` 테이블을 생성하여 7월의 각 일마다 연별 평균 항공편의 수를 집계한 결과 실제 7월 4일을 전후하여 항공편의 수가 줄어듦을 확인할 수 있었다. 5월 30일의 경우는 위에서 확인했듯이 공휴일인 Memorial Day이기 때문에 항공편의 수가 줄어든 것으로 추론된다. 한편 1월 10일, 8월 29일에 항공편의 수가 급락한 까닭은 기상 악화인 것으로 여겨진다. `Monday2011Cancelled`라는 테이블을 생성하여 날짜별 결항 원인을 플랏팅한 결과 1월 10일, 8월 29일에는 날씨 때문에 대부분 결항이 발생했음을 알 수 있었다. 특히 낙폭이 가장 컸던 1월 10일 전후에는 미국에 매우 강한 눈폭풍이 발생했었다는 사실이 보고되어 있다. 
 
 ```R
 dbDisconnect(con)
 ```
+
+## Part 3. Advanced Questions
+
+Provide a graphical summary to answer the following questions. These are intentionally vague in order to allow you to focus on different aspects of the data. We only provide some suggestions.
+
 ```R
 Sys.setlocale("LC_ALL", "English")
 library(RSQLite)
@@ -428,10 +433,6 @@ library(splines)
 ```R
 con = dbConnect(SQLite(), "project.sqlite")
 ```
-
-## Part 3. Advanced Questions
-
-Provide a graphical summary to answer the following questions. These are intentionally vague in order to allow you to focus on different aspects of the data. We only provide some suggestions.
 
 ### Q1. When is the best time of day/day of week/time of year to fly to minimise delays?
 
