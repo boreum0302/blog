@@ -6,20 +6,3 @@ sitemap: false
 @charset "utf-8";
 
 @import "so-simple";
-
-@font-face {
-     font-family: 'S-CoreDream-3Light';
-     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-     font-weight: normal;
-     font-style: normal;
-}
-
-$serif-font-family: "Nunum Myeongjo", serif;
-$sans-serif-font-family: "S-CoreDream-3Light", sans-serif;
-$monospace-font-family: "Nanum Gothic Coding", monospace;
-
-$base-font-family: $sans-serif-font-family;
-$headline-font-family: $sans-serif-font-family;
-$title-font-family: $sans-serif-font-family;
-$description-font-family: $sans-serif-font-family;
-$meta-font-family: $sans-serif-font-family;
